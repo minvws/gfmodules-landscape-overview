@@ -1,0 +1,383 @@
+{
+  "miscellaneous": [
+    {
+      "name": "Infrastructure overview",
+      "url": "https://landing-overview.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "PHP",
+      "has_version": false,
+      "description": "You are here."
+    },
+    {
+      "name": "Integration Test Suite",
+      "url": "https://orac.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "Python",
+      "has_version": true,
+      "description": "This service is used for integration testing of the system."
+    }
+  ],
+  "testing": [
+    {
+      "name": "Adresseringsdienst",
+      "url": "https://adressering.test.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
+    },
+    {
+      "name": "Emax (inge6)",
+      "url": "https://emax.test.gf.irealisatie.nl",
+      "type": "Python",
+      "github": "minvws/nl-rdo-emax",
+      "has_version": false,
+      "description": "This is the Emax API, which provides data for the Emax system."
+    },
+    {
+      "name": "Documentation",
+      "url": "https://fdocs.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-functional-documentation",
+      "type": "Sphinx",
+      "has_version": false,
+      "description": "This is the documentation for the functional aspects of the system."
+    },
+    {
+      "name": "Jaeger",
+      "url": "https://jaeger.test.gf.irealisatie.nl",
+      "type": "Jaeger",
+      "has_version": false,
+      "description": "This is the Jaeger service for tracing and monitoring."
+    },
+    {
+      "name": "Kwalificatie register admin api",
+      "url": "https://kwalificatie-admin-api.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-qualification-register-admin-api-private",
+      "type": "Python",
+      "has_version": true,
+      "description": "The qualification register admin API is the private access point that exposes an api where all qualified applications for certain protocols can be managed"
+    },
+    {
+      "name": "Kwalificatie register api",
+      "url": "https://kwalificatie-api.test.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-qualification-register-api",
+      "type": "Python",
+      "has_version": true,
+      "description": "The qualification register is the public access point that exposes a public api where all qualified applications for certain protocols can be retrieved"
+    },
+    {
+      "name": "Kwalificatie register web",
+      "url": "https://kwalificatie.test.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-qualification-register-web",
+      "type": "Vue",
+      "has_version": false,
+      "description": " The qualification register web is the client application that serves views to end users who want to request information from the public web in a GUI."
+    },
+    {
+      "name": "Lokalisatie demo client",
+      "url": "https://ldemo.test.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-pgo-demo",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "Lokalisatie Metadata Register",
+      "url": "https://lmr.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-localization-metadata-register",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "LMR Noord",
+      "url": "https://lmr-noord.test.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Noord."
+    },
+    {
+      "name": "LMR Oost",
+      "url": "https://lmr-oost.test.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Oost."
+    },
+    {
+      "name": "LMR Zuid",
+      "url": "https://lmr-zuid.test.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Zuid."
+    },
+    {
+      "name": "Lokalisatie Register Service",
+      "url": "https://lrs.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-localization-register-service",
+      "type": "Python",
+      "has_version": true,
+      "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
+    },
+    {
+      "name": "MCSD Consumer Admin",
+      "url": "https://mcsd-consumer-admin.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Consumer Update Client",
+      "url": "https://mcsd-consumer.test.gf.prolocation.net",
+      "github": "",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Registratie Portaal",
+      "url": "https://mcsd-registratie-portaal.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Supplier Service",
+      "url": "https://mcsd-supplier.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "HAPI",
+      "has_version": false
+    },
+    {
+      "name": "National Referral Index",
+      "url": "https://nvi.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-national-referral-index",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "Open Policy Agent",
+      "url": "https://opa.test.gf.prolocation.net",
+      "type": "Custom",
+      "has_version": false
+    },
+    {
+      "name": "Toestemming Stub",
+      "url": "https://otv-stub.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "Toestemmingsvoorziening Portaal",
+      "url": "https://otv-web.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "PRS",
+      "url": "https://pseudoniem.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-prs-private",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "PRS Stub",
+      "url": "https://prs-stub.test.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-pseudonym-service",
+      "type": "Python",
+      "has_version": true,
+      "description": "This is the stub for the Pseudonym Service."
+    },
+    {
+      "name": "Grafana Statistics",
+      "url": "https://stats.test.gf.irealisatie.nl",
+      "github": "",
+      "type": "Grafana",
+      "has_version": false
+    },
+    {
+      "name": "Viewer",
+      "url": "https://web.test.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-viewer-web-private",
+      "type": "PHP",
+      "has_version": true
+    }
+  ],
+  "proeftuin": [
+    {
+      "name": "Adresseringsdienst",
+      "url": "https://generiekefuncties.datavoorgezondheid.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
+    },
+    {
+      "name": "Documentation",
+      "url": "https://fdocs.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-functional-documentation",
+      "type": "Sphinx",
+      "has_version": false,
+      "description": "generiekefuncties.datavoorgezondheid.nl"
+    },
+    {
+      "name": "Jaeger",
+      "url": "https://jaeger.proeftuin.gf.irealisatie.nl",
+      "type": "Jaeger",
+      "has_version": false,
+      "description": "This is the Jaeger service for tracing and monitoring."
+    },
+    {
+      "name": "Kwalificatie register admin api",
+      "url": "https://kwalificatie-admin-api.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-qualification-register-admin-api-private",
+      "type": "Python",
+      "has_version": true,
+      "description": "The qualification register admin API is the private access point that exposes an api where all qualified applications for certain protocols can be managed"
+    },
+    {
+      "name": "Kwalificatie register api",
+      "url": "https://kwalificatie-api.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-qualification-register-api",
+      "type": "Python",
+      "has_version": true,
+      "description": "The qualification register is the public access point that exposes a public api where all qualified applications for certain protocols can be retrieved"
+    },
+    {
+      "name": "Kwalificatie register web",
+      "url": "https://kwalificatie.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-qualification-register-web",
+      "type": "Vue",
+      "has_version": false,
+      "description": " The qualification register web is the client application that serves views to end users who want to request information from the public web in a GUI."
+    },
+    {
+      "name": "Lokalisatie demo client",
+      "url": "https://lokalisatie-demo.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-pgo-demo",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "Lokalisatie Metadata Register",
+      "url": "https://lmr.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-localization-metadata-register",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "LMR Noord",
+      "url": "https://lmr-noord.proeftuin.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Noord."
+    },
+    {
+      "name": "LMR Oost",
+      "url": "https://lmr-oost.proeftuin.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Oost."
+    },
+    {
+      "name": "LMR Zuid",
+      "url": "https://lmr-zuid.proeftuin.gf.irealisatie.nl",
+      "type": "HAPI",
+      "has_version": false,
+      "description": "HAPI Storage system for LMR Zuid."
+    },
+    {
+      "name": "Lokalisatie Register Service",
+      "url": "https://lrs.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-localization-register-service",
+      "type": "Python",
+      "has_version": true,
+      "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
+    },
+    {
+      "name": "MCSD Consumer Admin",
+      "url": "https://mcsd-consumer-admin.proeftuin.gf.irealisatie.nl",
+      "github": "",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Consumer Update Client",
+      "url": "https://mcsd-consumer.proeftuin.gf.prolocation.net",
+      "github": "",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Registratie Portaal",
+      "url": "https://mcsd-registratie-portaal.proeftuin.gf.irealisatie.nl",
+      "github": "",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "MCSD Supplier Service",
+      "url": "https://mcsd-supplier.proeftuin.gf.irealisatie.nl",
+      "github": "",
+      "type": "HAPI",
+      "has_version": false
+    },
+    {
+      "name": "National Referral Index",
+      "url": "https://nvi.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-national-referral-index",
+      "type": "PHP",
+      "has_version": true,
+      "description": "The National Referral Index manages the referrals to healthcare providers which have data for a certain pseudonym."
+    },
+    {
+      "name": "Open Policy Agent",
+      "url": "https://opa.labs.gf.prolocation.net",
+      "type": "Custom",
+      "has_version": false
+    },
+    {
+      "name": "Toestemming Stub",
+      "url": "https://otv-stub.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-toestemming-stub",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "Toestemmingsvoorziening Portaal",
+      "url": "https://otv-web.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-online-toestemmingsvoorziening-portaal-stub-private",
+      "type": "PHP",
+      "has_version": true
+    },
+    {
+      "name": "PRS",
+      "url": "https://pseudoniem.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-prs-private",
+      "type": "Python",
+      "has_version": true
+    },
+    {
+      "name": "PRS Stub",
+      "url": "https://prs-stub.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/nl-irealisatie-zmodules-pseudonym-service",
+      "type": "Python",
+      "has_version": true,
+      "description": "This is the stub for the Pseudonym Service."
+    },
+    {
+      "name": "Grafana Statistics",
+      "url": "https://stats.proeftuin.gf.irealisatie.nl",
+      "github": "",
+      "type": "Grafana",
+      "has_version": false
+    },
+    {
+      "name": "Viewer",
+      "url": "https://web.proeftuin.gf.irealisatie.nl",
+      "github": "minvws/gfmodules-viewer-web-private",
+      "type": "PHP",
+      "has_version": true
+    }
+  ],
+  "staging": [
+  ],
+  "production": [
+  ]
+}
