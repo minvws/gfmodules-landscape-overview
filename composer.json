@@ -1,8 +1,8 @@
 {
-    "name": "jthijssen/landscape",
+    "name": "minvws/gfmodules-landscape-overview",
     "autoload": {
         "psr-4": {
-            "Jthijssen\\Landscape\\": "src/"
+            "minvws\\landscape\\": "src/"
         }
     },
     "authors": [
