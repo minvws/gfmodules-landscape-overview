@@ -49,30 +49,6 @@
       "description": "This is the Jaeger service for tracing and monitoring."
     },
     {
-      "name": "Kwalificatie register admin api",
-      "url": "https://kwalificatie-admin-api.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-qualification-register-admin-api-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "The qualification register admin API is the private access point that exposes an api where all qualified applications for certain protocols can be managed"
-    },
-    {
-      "name": "Kwalificatie register api",
-      "url": "https://kwalificatie-api.test.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-qualification-register-api",
-      "type": "Python",
-      "has_version": true,
-      "description": "The qualification register is the public access point that exposes a public api where all qualified applications for certain protocols can be retrieved"
-    },
-    {
-      "name": "Kwalificatie register web",
-      "url": "https://kwalificatie.test.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-qualification-register-web",
-      "type": "Vue",
-      "has_version": false,
-      "description": " The qualification register web is the client application that serves views to end users who want to request information from the public web in a GUI."
-    },
-    {
       "name": "Lokalisatie demo client",
       "url": "https://ldemo.test.gf.irealisatie.nl",
       "github": "minvws/nl-irealisatie-zmodules-pgo-demo",
@@ -222,30 +198,6 @@
       "type": "Jaeger",
       "has_version": false,
       "description": "This is the Jaeger service for tracing and monitoring."
-    },
-    {
-      "name": "Kwalificatie register admin api",
-      "url": "https://kwalificatie-admin-api.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-qualification-register-admin-api-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "The qualification register admin API is the private access point that exposes an api where all qualified applications for certain protocols can be managed"
-    },
-    {
-      "name": "Kwalificatie register api",
-      "url": "https://kwalificatie-api.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-qualification-register-api",
-      "type": "Python",
-      "has_version": true,
-      "description": "The qualification register is the public access point that exposes a public api where all qualified applications for certain protocols can be retrieved"
-    },
-    {
-      "name": "Kwalificatie register web",
-      "url": "https://kwalificatie.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-qualification-register-web",
-      "type": "Vue",
-      "has_version": false,
-      "description": " The qualification register web is the client application that serves views to end users who want to request information from the public web in a GUI."
     },
     {
       "name": "Lokalisatie demo client",
