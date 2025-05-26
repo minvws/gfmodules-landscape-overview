@@ -1,6 +1,6 @@
 # Simple overview of the GFModule infrastructure landscape
 
-This will be a simple overview of the GFModule infrastructure including versioning and open GitJub PR's.
+This will be a simple overview of the GFModule infrastructure including versioning and open GitHub PR's.
 
 Note that this is a work in progress and will be updated as we go along.
 
