@@ -3,7 +3,7 @@
     {
       "name": "Infrastructure overview",
       "url": "https://landing-overview.test.gf.irealisatie.nl",
-      "github": "",
+      "github": "minvws/gfmodules-landscape-overview",
       "type": "PHP",
       "has_version": false,
       "description": "You are here."
@@ -26,12 +26,12 @@
       "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
     },
     {
-      "name": "Emax (inge6)",
+      "name": "Max (inge6)",
       "url": "https://emax.test.gf.irealisatie.nl",
       "type": "Python",
-      "github": "minvws/nl-rdo-emax",
+      "github": "minvws/nl-rdo-max-private",
       "has_version": false,
-      "description": "This is the Emax API, which provides data for the Emax system."
+      "description": "This is the login service, this will provide eHerkenning SAML to OIDC bridge."
     },
     {
       "name": "Documentation",
