@@ -179,7 +179,7 @@
   "proeftuin": [
     {
       "name": "Adresseringsdienst",
-      "url": "https://generiekefuncties.datavoorgezondheid.nl",
+      "url": "https://adressering.proeftuin.gf.irealisatie.nl",
       "type": "HAPI",
       "has_version": false,
       "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
