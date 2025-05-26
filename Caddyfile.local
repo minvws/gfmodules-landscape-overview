@@ -1,0 +1,5 @@
+http://:9999 {
+	root * public
+	php_fastcgi unix//var/run/php/php8.3-fpm.sock
+	file_server
+}

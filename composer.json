@@ -1,0 +1,28 @@
+{
+    "name": "minvws/gfmodules-landscape-overview",
+    "autoload": {
+        "psr-4": {
+            "minvws\\landscape\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Joshua Thijssen",
+            "email": "jthijssen@noxlogic.nl"
+        }
+    ],
+    "require": {
+        "twig/twig": "^3.21",
+        "knplabs/github-api": "^3.16",
+        "symfony/http-client": "^7.2",
+        "nyholm/psr7": "^1.8",
+        "vlucas/phpdotenv": "^5.6",
+        "symfony/cache": "^7.2",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

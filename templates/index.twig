@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GFModules Overview</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f0f0f0;
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+        }
+        .env {
+            margin-bottom: 3rem;
+        }
+        .env-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid #007acc;
+            padding-left: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #007acc;
+            color: white;
+            text-align: left;
+        }
+        td a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        .pr-count, .version {
+            font-family: monospace;
+            color: #333;
+        }
+
+        tbody tr:hover {
+            background-color: #e0f3ff;
+            cursor: pointer;
+        }
+
+        .env-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 5px solid #007acc;
+            padding-left: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .env.collapsed table {
+            display: none;
+        }
+
+        .env.collapsed .env-title::before {
+            content: " ▶";
+        }
+
+        .env:not(.collapsed) .env-title::before {
+            content: " ▼";
+        }
+
+        th {
+            cursor: pointer;
+            position: relative;
+        }
+
+        th::after {
+            content: " ⇅";
+            font-size: 0.8rem;
+            color: #fff;
+            position: absolute;
+            right: 8px;
+        }
+
+        th.sort-asc::after {
+            content: " ▲";
+            color: #fff;
+        }
+
+        th:not(.sort-asc)::after {
+            content: " ▼";
+            color: #fff;
+        }
+
+        .status.success {
+            color: #2e7d32;
+        }
+        .status.redirect {
+            color: #0288d1;
+        }
+        .status.client-error {
+            color: #d32f2f;
+        }
+        .status.server-error {
+            color: #ed6c02;
+        }
+        .status.unknown {
+            color: #757575;
+        }
+    </style>
+</head>
+<body>
+
+<h1>GFModules Overview</h1>
+
+{% for env, list in services %}
+    <div class="env">
+        <div class="env-title" onclick="toggleTable(this)">
+            {{ env|capitalize }} environment
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 33%;" onclick="sortTable(this)">Service</th>
+                <th onclick="sortTable(this)">Type</th>
+                <th onclick="sortTable(this)">URL</th>
+                <th onclick="sortTable(this)">HTTP Status</th>
+                <th onclick="sortTable(this)">Version</th>
+                <th onclick="sortTable(this)">GitHub</th>
+                <th onclick="sortTable(this)">Open PRs</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for service in list %}
+                <tr>
+                    <td>{{ service.name }}<br><small>{{ service.description }}</small></td>
+                    <td>{{ service.type|default('—') }}</td>
+                    <td><a href="{{ service.url }}" target="_blank">{{ service.url }}</a></td>
+                    <td class="status" data-url="{{ service.url }}">Loading…</td>
+                    <td class="version">
+                        {% if service.has_version %}
+                            <span data-version-url="/check_version.php?url={{ service.url }}">Loading…</span>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+
+                    {% if service.github %}
+                        <td><a href="https://github.com/{{ service.github }}" target="_blank">GitHub</a></td>
+                        <td class="pr-count" data-github="{{ service.github }}">Loading…</td>
+                    {% else %}
+                        <td colspan="2">—</td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No services found in this environment</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endfor %}
+
+<script>
+    function toggleTable(titleElem) {
+        const envDiv = titleElem.closest('.env');
+        envDiv.classList.toggle('collapsed');
+    }
+
+    function sortTable(th) {
+        const table = th.closest("table");
+        const tbody = table.querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const index = Array.from(th.parentNode.children).indexOf(th);
+        const isNumeric = th.textContent.toLowerCase().includes("pr") || th.textContent.toLowerCase().includes("version");
+        const isAsc = th.classList.toggle("sort-asc");
+
+        rows.sort((a, b) => {
+            const cellA = a.children[index].textContent.trim();
+            const cellB = b.children[index].textContent.trim();
+
+            if (isNumeric) {
+                const numA = parseFloat(cellA) || 0;
+                const numB = parseFloat(cellB) || 0;
+                return isAsc ? numA - numB : numB - numA;
+            } else {
+                return isAsc ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            }
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+
+        th.parentNode.querySelectorAll("th").forEach(thEl => {
+            if (thEl !== th) thEl.classList.remove("sort-asc");
+        });
+    }
+
+    function getStatusClass(status) {
+        if (!status) return 'unknown';
+        if (status >= 200 && status < 300) return 'success';
+        if (status >= 300 && status < 400) return 'redirect';
+        if (status >= 400 && status < 500) return 'client-error';
+        if (status >= 500) return 'server-error';
+        return 'unknown';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("[data-github]").forEach(cell => {
+            const url = cell.getAttribute("data-github");
+            const match = url.match(/([^\/]+\/[^\/]+)/);
+            if (!match) {
+                cell.textContent = "—";
+                return;
+            }
+
+            const repo = match[1];
+            fetch(`/github_prs.php?repo=${encodeURIComponent(repo)}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    cell.textContent = data.pull_requests ?? "—";
+                })
+                .catch(() => {
+                    cell.textContent = "error";
+                });
+        });
+
+        document.querySelectorAll("[data-version-url]").forEach(span => {
+            const url = span.getAttribute("data-version-url");
+
+            fetch(url)
+                .then(resp => resp.json())
+                .then(data => {
+                    const version = data.version || "unknown";
+                    const shortRef = data.git_ref ? data.git_ref.substring(0, 8) : "";
+                    span.textContent = shortRef ? `${version} (${shortRef})` : version;
+                })
+                .catch(() => {
+                    span.textContent = "error";
+                });
+        });
+
+        // Fetch HTTP status codes
+        document.querySelectorAll(".status[data-url]").forEach(cell => {
+            const url = cell.getAttribute("data-url");
+            if (!url || url === '—') {
+                cell.textContent = "—";
+                return;
+            }
+
+            fetch(`/check_status.php?url=${encodeURIComponent(url)}`, {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        let errorText = 'error';
+                        if (data.error === 'connection_failed') errorText = 'connection failed';
+                        if (data.error === 'host_not_found') errorText = 'host not found';
+
+                        cell.textContent = errorText;
+                        cell.classList.add('unknown');
+                    } else {
+                        cell.textContent = data.http_status;
+                        cell.classList.add(getStatusClass(data.http_status));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking status:', error);
+                    cell.textContent = "error";
+                    cell.classList.add('unknown');
+                });
+        });
+    });
+</script>
+
+</body>
+</html>
