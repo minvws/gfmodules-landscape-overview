@@ -2,7 +2,7 @@
   "miscellaneous": [
     {
       "name": "Infrastructure overview",
-      "url": "https://landing-overview.test.gf.irealisatie.nl",
+      "url": "https://landing.test.gf.irealisatie.nl",
       "github": "minvws/gfmodules-landscape-overview",
       "type": "PHP",
       "has_version": false,
@@ -47,20 +47,6 @@
       "type": "Jaeger",
       "has_version": false,
       "description": "This is the Jaeger service for tracing and monitoring."
-    },
-    {
-      "name": "Lokalisatie demo client",
-      "url": "https://ldemo.test.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-pgo-demo",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "Lokalisatie Metadata Register",
-      "url": "https://lmr.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-metadata-register",
-      "type": "Python",
-      "has_version": true
     },
     {
       "name": "LMR Noord",
