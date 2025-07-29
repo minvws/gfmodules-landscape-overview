@@ -136,7 +136,7 @@
                 <tr>
                     <td>{{ service.name }}<br><small>{{ service.description }}</small></td>
                     <td>{{ service.type|default('—') }}</td>
-                    <td><a href="{{ service.url }}" target="_blank">{{ service.url }}</a></td>
+                    <td><a href="{{ service.external_url }}" target="_blank">{{ service.external_url ?? service.url }}</a></td>
                     <td class="status" data-url="{{ service.url }}">Loading…</td>
                     <td class="version">
                         {% if service.has_version %}
