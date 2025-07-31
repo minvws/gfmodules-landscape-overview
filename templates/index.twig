@@ -140,7 +140,7 @@
                     <td class="status" data-url="{{ service.url }}">Loading…</td>
                     <td class="version">
                         {% if service.has_version %}
-                            <span data-version-url="/check_version.php?url={{ service.url }}">Loading…</span>
+                            <span data-version-url="/check_version.php?url={{ service.url }}&type={{ service.type }}">Loading…</span>
                         {% else %}
                             —
                         {% endif %}
