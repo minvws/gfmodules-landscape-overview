@@ -109,7 +109,7 @@ function fetch_http_status(string $url): array
     ]);
 
     try {
-        $response = $client->head($url, [
+        $response = $client->get($url, [
             'connect_timeout' => 2
         ]);
 
@@ -121,7 +121,6 @@ function fetch_http_status(string $url): array
             $redirects = $response->getHeader('X-Guzzle-Redirect-History');
             $finalUrl = end($redirects) ?: $url;
         }
-
         return [
             'http_status' => $status,
             'url' => $finalUrl,

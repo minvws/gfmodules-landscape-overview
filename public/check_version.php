@@ -22,6 +22,7 @@ if (!isset($_GET['url'])) {
 }
 
 $url = $_GET['url'];
+$type = $_GET['type'];
 
 $allowedUrls = get_allowed_urls(__DIR__ . '/../services.json');
 if (!in_array($url, $allowedUrls)) {
@@ -39,7 +40,7 @@ if ($cachedItem->isHit()) {
     exit;
 }
 
-$data = fetch_version_info($url);
+$data = fetch_version_info($url, $type);
 if (isset($data['error'])) {
     http_response_code(502);
     echo json_encode($data);
@@ -73,19 +74,28 @@ function get_allowed_urls(string $settingsFile)
     return $allowedUrls;
 }
 
-function fetch_version_info($url) {
+function fetch_version_info($url, $type) {
     $client = new Client([
         'timeout' => 4,
         'headers' => [
         ],
         'verify' => true,
     ]);
-
     try {
-        $response = $client->get($url . '/version.json');
-        $json = $response->getBody()->getContents();
-        return json_decode($json, true);
+        if(strcmp($type, "HAPI") == 0){
+            $response = $client->get($url . '/fhir/metadata');
+            $json = $response->getBody()->getContents();
+            return json_decode($json, true)['software'];
+        } else {
+            $response = $client->get($url . '/version.json');
+            $json = $response->getBody()->getContents();
+            return json_decode($json, true);
+        }
     } catch (RequestException $e) {
+        if(strcmp($type, "HAPI") == 0) {
+            error_log($type);
+            error_log($e->getMessage());
+        }
         return ['error' => 'Fetch failed', 'details' => $e->getMessage()];
     }
 }
