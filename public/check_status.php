@@ -14,36 +14,18 @@ $cache = new FilesystemAdapter(
     directory: __DIR__ . '/../.cache'
 );
 
-// Get requested URL
-if (!isset($_GET['url'])) {
+// Get requested Service
+if (!isset($_GET['service'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing URL parameter']);
+    echo json_encode(['error' => 'Missing service parameter']);
     exit;
 }
-
-$url = $_GET['url'];
 
 // Validate URL against allowed domains
-$allowedUrls = get_allowed_urls(__DIR__ . '/../services.json');
-$normalizedUrl = rtrim(parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH), '/');
-$isAllowed = false;
-
-foreach ($allowedUrls as $allowedUrl) {
-    $normalizedAllowed = rtrim(parse_url($allowedUrl, PHP_URL_HOST) . parse_url($allowedUrl, PHP_URL_PATH), '/');
-    if (str_starts_with($normalizedUrl, $normalizedAllowed)) {
-        $isAllowed = true;
-        break;
-    }
-}
-
-if (!$isAllowed) {
-    http_response_code(403);
-    echo json_encode(['error' => 'URL not allowed', 'url' => $url]);
-    exit;
-}
+$service = get_service(__DIR__ . '/../services.json', $_GET['service']);
 
 // Check cache
-$cacheKey = sha1($url);
+$cacheKey = sha1($service['url']);
 $cachedItem = $cache->getItem($cacheKey);
 
 if ($cachedItem->isHit()) {
@@ -53,7 +35,7 @@ if ($cachedItem->isHit()) {
 }
 
 // Fetch fresh status
-$data = fetch_http_status($url);
+$data = fetch_http_status($service);
 
 // Cache and return result
 $cachedItem->set($data);
@@ -63,36 +45,45 @@ header('Content-Type: application/json');
 echo json_encode($data);
 exit;
 
+
 /**
- * Get allowed URLs from services.json
+ * Get the passed service for the given serviceName from services.json
+ * @param array $services
+ * @param string $serviceName
+ * @return array|null
  */
-function get_allowed_urls(string $settingsFile): array
+function get_service(string $settingsFile, string $serviceName): ?array
 {
     if (!file_exists($settingsFile)) {
         http_response_code(500);
         echo json_encode(['error' => 'Config missing']);
         exit;
     }
-
-    $allowedUrls = [];
     $data = json_decode(file_get_contents($settingsFile), true);
 
+    if (empty($data) || !is_array($data)) {
+        return null;
+    }
+
+    // Search for the service by name
     foreach ($data as $envServices) {
-        foreach ($envServices as $svc) {
-            if (!empty($svc['url'])) {
-                $allowedUrls[] = rtrim($svc['url'], '/');
+        foreach ($envServices as $service) {
+            if (isset($service['name']) && $service['name'] === $serviceName) {
+                return $service;
             }
         }
     }
 
-    return array_unique($allowedUrls);
+    return null;
 }
 
 /**
  * Fetch HTTP status for a given URL
  */
-function fetch_http_status(string $url): array
+function fetch_http_status(array $service): array
 {
+    error_log("fetching status for service: " . $service['name'] . " at " . $service['url']);
+
     $client = new Client([
         'timeout' => 4,
         'allow_redirects' => [
@@ -104,22 +95,24 @@ function fetch_http_status(string $url): array
         'headers' => [
             'User-Agent' => 'GFModules Status Checker/1.0'
         ],
-        'verify' => true,
-        'http_errors' => false // Don't throw exceptions for 4xx/5xx
+        'http_errors' => false, // Don't throw exceptions for 4xx/5xx
+        'cert' => $service['mtls_cert'] ?? null,
+        'ssl_key' => $service['mtls_key'] ?? null,
+        'verify' => $service['mtls_ca'] ?? true
     ]);
 
     try {
-        $response = $client->get($url, [
+        $response = $client->get($service['url'], [
             'connect_timeout' => 2
         ]);
 
         $status = $response->getStatusCode();
-        $finalUrl = $url;
+        $finalUrl = $service['url'];
 
         // Get final URL after redirects
         if ($response->hasHeader('X-Guzzle-Redirect-History')) {
             $redirects = $response->getHeader('X-Guzzle-Redirect-History');
-            $finalUrl = end($redirects) ?: $url;
+            $finalUrl = end($redirects) ?: $service['url'];
         }
         return [
             'http_status' => $status,
@@ -131,14 +124,14 @@ function fetch_http_status(string $url): array
         return [
             'error' => 'connection_failed',
             'details' => $e->getMessage(),
-            'url' => $url,
+            'url' => $service['url'],
             'timestamp' => time()
         ];
     } catch (ConnectException $e) {
         return [
             'error' => 'host_not_found',
             'details' => $e->getMessage(),
-            'url' => $url,
+            'url' => $service['url'],
             'timestamp' => time()
         ];
     }

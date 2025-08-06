@@ -7,95 +7,93 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-
 $cache = new FilesystemAdapter(
     namespace: 'version_proxy',
     defaultLifetime: 300,       // 5 minutes
     directory: __DIR__ . '/../.cache'
 );
 
-// Get requested URL
-if (!isset($_GET['url'])) {
+// Get requested Service
+if (!isset($_GET['service'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing URL']);
+    echo json_encode(['error' => 'Missing service parameter']);
     exit;
 }
+// Validate URL against allowed domains
+$service = get_service(__DIR__ . '/../services.json', $_GET['service']);
 
-$url = $_GET['url'];
-$type = $_GET['type'];
-
-$allowedUrls = get_allowed_urls(__DIR__ . '/../services.json');
-if (!in_array($url, $allowedUrls)) {
-    http_response_code(403);
-    echo json_encode(['error' => 'URL not allowed']);
-    exit;
-}
-
-
-$cacheKey = sha1($url);
+// Check cache
+$cacheKey = sha1($service['url']);
 $cachedItem = $cache->getItem($cacheKey);
+
 if ($cachedItem->isHit()) {
     header('Content-Type: application/json');
     echo json_encode($cachedItem->get());
     exit;
 }
 
-$data = fetch_version_info($url, $type);
-if (isset($data['error'])) {
-    http_response_code(502);
-    echo json_encode($data);
-    exit;
-}
+// Fetch fresh status
+$data = fetch_version_info($service);
 
+// Cache and return result
 $cachedItem->set($data);
 $cache->save($cachedItem);
+
+header('Content-Type: application/json');
 echo json_encode($data);
 exit;
 
-
-function get_allowed_urls(string $settingsFile)
+/**
+ * Get the passed service for the given serviceName from services.json
+ * @param array $services
+ * @param string $serviceName
+ * @return array|null
+ */
+function get_service(string $settingsFile, string $serviceName): ?array
 {
     if (!file_exists($settingsFile)) {
         http_response_code(500);
         echo json_encode(['error' => 'Config missing']);
         exit;
     }
-
-    $allowedUrls = [];
     $data = json_decode(file_get_contents($settingsFile), true);
+
+    if (empty($data) || !is_array($data)) {
+        return null;
+    }
+
+    // Search for the service by name
     foreach ($data as $envServices) {
-        foreach ($envServices as $svc) {
-            if (!empty($svc['has_version']) && !empty($svc['url'])) {
-                $allowedUrls[] = rtrim($svc['url'], '/');
+        foreach ($envServices as $service) {
+            if (isset($service['name']) && $service['name'] === $serviceName) {
+                return $service;
             }
         }
     }
 
-    return $allowedUrls;
+    return null;
 }
 
-function fetch_version_info($url, $type) {
+function fetch_version_info($service) {
     $client = new Client([
         'timeout' => 4,
         'headers' => [
         ],
-        'verify' => true,
+        'cert' => $service['mtls_cert'] ?? null,
+        'ssl_key' => $service['mtls_key'] ?? null,
+        'verify' => $service['mtls_ca'] ?? true
     ]);
     try {
-        if(strcmp($type, "HAPI") == 0){
-            $response = $client->get($url . '/fhir/metadata');
+        if(strcmp($service['type'], "HAPI") == 0){
+            $response = $client->get($service['url'] . '/fhir/metadata');
             $json = $response->getBody()->getContents();
             return json_decode($json, true)['software'];
         } else {
-            $response = $client->get($url . '/version.json');
+            $response = $client->get($service['url'] . '/version.json');
             $json = $response->getBody()->getContents();
             return json_decode($json, true);
         }
     } catch (RequestException $e) {
-        if(strcmp($type, "HAPI") == 0) {
-            error_log($type);
-            error_log($e->getMessage());
-        }
         return ['error' => 'Fetch failed', 'details' => $e->getMessage()];
     }
 }
