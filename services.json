@@ -22,15 +22,16 @@
       "name": "Adresseringsdienst",
       "url": "https://adressering.test.gf.irealisatie.nl",
       "type": "HAPI",
-      "has_version": false,
+      "has_version": true,
       "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
     },
     {
       "name": "Max (inge6)",
       "url": "https://emax.test.gf.irealisatie.nl",
+      "version_url": "https://emax.test.gf.irealisatie.nl/static/version.json",
       "type": "Python",
       "github": "minvws/nl-rdo-max-private",
-      "has_version": false,
+      "has_version": true,
       "description": "This is the login service, this will provide eHerkenning SAML to OIDC bridge."
     },
     {
@@ -38,7 +39,7 @@
       "url": "https://fdocs.test.gf.irealisatie.nl",
       "github": "minvws/gfmodules-functional-documentation",
       "type": "Sphinx",
-      "has_version": false,
+      "has_version": true,
       "description": "This is the documentation for the functional aspects of the system."
     },
     {
@@ -52,21 +53,21 @@
       "name": "LMR Noord",
       "url": "https://lmr-noord.test.gf.irealisatie.nl",
       "type": "HAPI",
-      "has_version": false,
+      "has_version": true,
       "description": "HAPI Storage system for LMR Noord."
     },
     {
       "name": "LMR Oost",
       "url": "https://lmr-oost.test.gf.irealisatie.nl",
       "type": "HAPI",
-      "has_version": false,
+      "has_version": true,
       "description": "HAPI Storage system for LMR Oost."
     },
     {
       "name": "LMR Zuid",
       "url": "https://lmr-zuid.test.gf.irealisatie.nl",
       "type": "HAPI",
-      "has_version": false,
+      "has_version": true,
       "description": "HAPI Storage system for LMR Zuid."
     },
     {
@@ -95,7 +96,7 @@
       "name": "MCSD Registratie Portaal",
       "url": "https://mcsd-registratie-portaal.test.gf.irealisatie.nl",
       "github": "",
-      "type": "Python",
+      "type": "PHP",
       "has_version": true
     },
     {
@@ -109,7 +110,7 @@
       "name": "National Referral Index",
       "url": "https://nvi.test.gf.irealisatie.nl",
       "github": "minvws/gfmodules-national-referral-index",
-      "type": "PHP",
+      "type": "Python",
       "has_version": true
     },
     {

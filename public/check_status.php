@@ -24,6 +24,8 @@ $mtls = [
     'ca' => $_ENV['MTLS_CA'] ?: null
 ];
 
+$env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
+
 // Get requested Service
 if (!isset($_GET['service'])) {
     http_response_code(400);
@@ -35,6 +37,12 @@ if (!isset($_GET['service'])) {
 if (!isset($_GET['env'])) {
     http_response_code(400);
     echo json_encode(['error' => 'Missing env parameter']);
+    exit;
+}
+
+if (isset($env) && $env !== $_GET['env']) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Environment not allowed']);
     exit;
 }
 
