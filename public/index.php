@@ -5,8 +5,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 $twig = new \Twig\Environment($loader);
 
-$env_path = getenv('ENV_PATH') ?? __DIR__ . '/..';
-
+$env_path = getenv('ENV_PATH');
+if (!$env_path){
+    $env_path = __DIR__ . '/..';
+}
 $dotenv = Dotenv\Dotenv::createImmutable($env_path);
 $dotenv->load();
 

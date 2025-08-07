@@ -13,7 +13,10 @@ $cache = new FilesystemAdapter(
     directory: __DIR__ . '/../.cache'
 );
 
-$env_path = getenv('ENV_PATH') ?? __DIR__ . '/..';
+$env_path = getenv('ENV_PATH');
+if (!$env_path){
+    $env_path = __DIR__ . '/..';
+}
 $dotenv = Dotenv\Dotenv::createImmutable($env_path);
 $dotenv->load();
 

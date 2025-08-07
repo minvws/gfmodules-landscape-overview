@@ -7,7 +7,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Github\Client;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$env_path = getenv('ENV_PATH') ?? __DIR__ . '/..';
+$env_path = getenv('ENV_PATH');
+if (!$env_path){
+    $env_path = __DIR__ . '/..';
+}
 $dotenv = Dotenv\Dotenv::createImmutable($env_path);
 $dotenv->load();
 
