@@ -13,14 +13,32 @@ $cache = new FilesystemAdapter(
     directory: __DIR__ . '/../.cache'
 );
 
+$mtls = [
+    'cert' => getenv('MTLS_CERT') ?: null,
+    'key' => getenv('MTLS_KEY') ?: null,
+    'ca' => getenv('MTLS_CA') ?: null
+];
+
 // Get requested Service
 if (!isset($_GET['service'])) {
     http_response_code(400);
     echo json_encode(['error' => 'Missing service parameter']);
     exit;
 }
-// Validate URL against allowed domains
-$service = get_service(__DIR__ . '/../services.json', $_GET['service']);
+
+// Get requested Env
+if (!isset($_GET['env'])) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Missing env parameter']);
+    exit;
+}
+
+$service = get_service(__DIR__ . '/../services.json', $_GET['service'], $_GET['env']);
+if (!$service) {
+    http_response_code(400);
+    echo json_encode(['Service' => 'Requested service not found']);
+    exit;
+}
 
 // Check cache
 $cacheKey = sha1($service['url']);
@@ -33,7 +51,7 @@ if ($cachedItem->isHit()) {
 }
 
 // Fetch fresh status
-$data = fetch_version_info($service);
+$data = fetch_version_info($service, $mtls);
 
 // Cache and return result
 $cachedItem->set($data);
@@ -49,7 +67,7 @@ exit;
  * @param string $serviceName
  * @return array|null
  */
-function get_service(string $settingsFile, string $serviceName): ?array
+function get_service(string $settingsFile, string $serviceName, string $envName): ?array
 {
     if (!file_exists($settingsFile)) {
         http_response_code(500);
@@ -58,30 +76,28 @@ function get_service(string $settingsFile, string $serviceName): ?array
     }
     $data = json_decode(file_get_contents($settingsFile), true);
 
-    if (empty($data) || !is_array($data)) {
+    if (empty($data) || !is_array($data) || !isset($data[$envName]) || !is_array($data[$envName])) {
         return null;
     }
 
     // Search for the service by name
-    foreach ($data as $envServices) {
-        foreach ($envServices as $service) {
-            if (isset($service['name']) && $service['name'] === $serviceName) {
-                return $service;
-            }
+    foreach ($data[$envName] as $service) {
+        if (isset($service['name']) && $service['name'] === $serviceName) {
+            return $service;
         }
     }
 
     return null;
 }
 
-function fetch_version_info($service) {
+function fetch_version_info(array $service, array $mtls) {
     $client = new Client([
         'timeout' => 4,
         'headers' => [
         ],
-        'cert' => $service['mtls_cert'] ?? null,
-        'ssl_key' => $service['mtls_key'] ?? null,
-        'verify' => $service['mtls_ca'] ?? true
+        'cert' => $mtls['cert'] ?? null,
+        'ssl_key' => $mtls['key'] ?? null,
+        'verify' => $mtls['ca'] ?? true
     ]);
     try {
         if(strcmp($service['type'], "HAPI") == 0){

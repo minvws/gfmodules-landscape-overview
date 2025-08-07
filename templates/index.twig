@@ -137,10 +137,10 @@
                     <td>{{ service.name }}<br><small>{{ service.description }}</small></td>
                     <td>{{ service.type|default('—') }}</td>
                     <td><a href="{{ service.external_url }}" target="_blank">{{ service.external_url ?? service.url }}</a></td>
-                    <td class="status" data-status-service="{{ service.name }}">Loading…</td>
+                    <td class="status" data-status-service="{{ service.name }}" data-status-env="{{ env }}">Loading…</td>
                     <td class="version">
                         {% if service.has_version %}
-                            <span data-version-service="{{ service.name }}">Loading…</span>
+                            <span data-version-service="{{ service.name }}" data-version-env="{{ env }}">Loading…</span>
                         {% else %}
                             —
                         {% endif %}
@@ -228,12 +228,14 @@
 
         document.querySelectorAll("[data-version-service]").forEach(span => {
             const serviceName = encodeURIComponent(span.getAttribute("data-version-service"));
-            if (!serviceName || serviceName === '—') {
+            const envName = encodeURIComponent(span.getAttribute("data-version-env"));
+
+            if (!serviceName || serviceName === '—' || !envName || envName === '—') {
                 cell.textContent = "—";
                 return;
             }
 
-            fetch(`/check_version.php?service=${ serviceName }`)
+            fetch(`/check_version.php?service=${ serviceName }&env=${ envName }`)
                 .then(resp => resp.json())
                 .then(data => {
                     const version = data.version || "unknown";
@@ -248,12 +250,14 @@
         // Fetch HTTP status codes
         document.querySelectorAll(".status[data-status-service]").forEach(cell => {
             const serviceName = encodeURIComponent(cell.getAttribute("data-status-service"));
-            if (!serviceName || serviceName === '—') {
+            const envName = encodeURIComponent(cell.getAttribute("data-status-env"));
+
+            if (!serviceName || serviceName === '—' || !envName || envName === '—') {
                 cell.textContent = "—";
                 return;
             }
 
-            fetch(`/check_status.php?service=${serviceName}`, {
+            fetch(`/check_status.php?service=${serviceName}&env=${ envName }`, {
                 method: 'GET',
                 cache: 'no-cache',
                 headers: {
