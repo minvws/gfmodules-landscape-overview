@@ -22,6 +22,7 @@ $mtls = [
     'key' => $_ENV['MTLS_KEY'] ?: null,
     'ca' => $_ENV['MTLS_CA'] ?: null
 ];
+$env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
 
 // Get requested Service
 if (!isset($_GET['service'])) {
@@ -37,6 +38,12 @@ if (!isset($_GET['env'])) {
     exit;
 }
 
+if (isset($env) && $env !== $_GET['env']) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Environment not allowed']);
+    exit;
+}
+
 $service = get_service(__DIR__ . '/../services.json', $_GET['service'], $_GET['env']);
 if (!$service) {
     http_response_code(400);
@@ -45,7 +52,8 @@ if (!$service) {
 }
 
 // Check cache
-$cacheKey = sha1($service['url']);
+$versionUrl = $service['version_url'] ?? $service['url'];
+$cacheKey = sha1($versionUrl);
 $cachedItem = $cache->getItem($cacheKey);
 
 if ($cachedItem->isHit()) {
@@ -105,11 +113,11 @@ function fetch_version_info(array $service, array $mtls) {
     ]);
     try {
         if(strcmp($service['type'], "HAPI") == 0){
-            $response = $client->get($service['url'] . '/fhir/metadata');
+            $response = $client->get($service['version_url'] ?? $service['url'] . '/fhir/metadata');
             $json = $response->getBody()->getContents();
             return json_decode($json, true)['software'];
         } else {
-            $response = $client->get($service['url'] . '/version.json');
+            $response = $client->get($service['version_url'] ?? $service['url'] . '/version.json');
             $json = $response->getBody()->getContents();
             return json_decode($json, true);
         }
