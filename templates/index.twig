@@ -39,7 +39,7 @@
             color: #007acc;
             text-decoration: none;
         }
-        .pr-count, .version {
+        .pr-count, .version .latest-version {
             font-family: monospace;
             color: #333;
         }
@@ -127,6 +127,7 @@
                 <th onclick="sortTable(this)">URL</th>
                 <th onclick="sortTable(this)">HTTP Status</th>
                 <th onclick="sortTable(this)">Version</th>
+                <th onclick="sortTable(this)">GitHub Latest Version</th>
                 <th onclick="sortTable(this)">GitHub</th>
                 <th onclick="sortTable(this)">Open PRs</th>
             </tr>
@@ -147,15 +148,16 @@
                     </td>
 
                     {% if service.github %}
+                        <td class="latest-version" data-github-version-service="{{ service.name }}" data-github-version-env="{{ env }}">Loading…</td>
                         <td><a href="https://github.com/{{ service.github }}" target="_blank">GitHub</a></td>
-                        <td class="pr-count" data-github="{{ service.github }}">Loading…</td>
+                        <td class="pr-count" data-github-service="{{ service.name }}" data-github-env="{{ env }}">Loading…</td>
                     {% else %}
-                        <td colspan="2">—</td>
+                        <td colspan="3">—</td>
                     {% endif %}
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No services found in this environment</td>
+                    <td colspan="6">No services found in this environment</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -207,16 +209,39 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll("[data-github]").forEach(cell => {
-            const url = cell.getAttribute("data-github");
-            const match = url.match(/([^\/]+\/[^\/]+)/);
-            if (!match) {
+        document.querySelectorAll("[data-github-version-service]").forEach(cell => {
+            const serviceName = encodeURIComponent(cell.getAttribute("data-github-version-service"));
+            const envName = encodeURIComponent(cell.getAttribute("data-github-version-env"));
+
+            if (!serviceName || serviceName === '—' || !envName || envName === '—') {
                 cell.textContent = "—";
                 return;
             }
 
-            const repo = match[1];
-            fetch(`/github_prs.php?repo=${encodeURIComponent(repo)}`)
+            fetch(`/github_latest_version.php?service=${ serviceName }&env=${ envName }`)
+                .then(resp => resp.json())
+                .then(data => {
+                    if(!data.tag_name) {
+                        cell.textContent = "—";
+                    } else {
+                        const $date = new Date(data.published_at);
+                        cell.textContent = `${data.tag_name} (${$date.toLocaleString('nl-NL', { dateStyle: 'full', timeStyle: 'short' })})`;
+                    }
+                })
+                .catch(() => {
+                    cell.textContent = "error";
+                });
+        });
+        document.querySelectorAll("[data-github-service]").forEach(cell => {
+            const serviceName = encodeURIComponent(cell.getAttribute("data-github-service"));
+            const envName = encodeURIComponent(cell.getAttribute("data-github-env"));
+
+            if (!serviceName || serviceName === '—' || !envName || envName === '—') {
+                cell.textContent = "—";
+                return;
+            }
+
+            fetch(`/github_prs.php?service=${ serviceName }&env=${ envName }`)
                 .then(resp => resp.json())
                 .then(data => {
                     cell.textContent = data.pull_requests ?? "—";
