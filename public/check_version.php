@@ -13,10 +13,14 @@ $cache = new FilesystemAdapter(
     directory: __DIR__ . '/../.cache'
 );
 
+$env_path = getenv('ENV_PATH') ?? __DIR__ . '/..';
+$dotenv = Dotenv\Dotenv::createImmutable($env_path);
+$dotenv->load();
+
 $mtls = [
-    'cert' => getenv('MTLS_CERT') ?: null,
-    'key' => getenv('MTLS_KEY') ?: null,
-    'ca' => getenv('MTLS_CA') ?: null
+    'cert' => $_ENV['MTLS_CERT'] ?: null,
+    'key' => $_ENV['MTLS_KEY'] ?: null,
+    'ca' => $_ENV['MTLS_CA'] ?: null
 ];
 
 // Get requested Service

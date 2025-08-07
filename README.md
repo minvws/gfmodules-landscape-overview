@@ -14,7 +14,7 @@ You can run the docker container:
 
 ```bash
 docker build -t landscape .
-docker run -d -p 9999:80 --env-file .env landscape
+docker run -d -p 9999:80 landscape
 ```
 
 Now you can access the application at `localhost:9999`.
