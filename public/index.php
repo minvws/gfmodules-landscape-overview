@@ -5,7 +5,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../templates');
 $twig = new \Twig\Environment($loader);
 
-$env = getenv('SERVICES_ENVIRONMENT') ?: null;
+$env_path = getenv('ENV_PATH') ?? __DIR__ . '/..';
+$dotenv = Dotenv\Dotenv::createImmutable($env_path);
+$dotenv->load();
+
+$env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
+
 $services = json_decode(file_get_contents(__DIR__ . '/../services.json'), true);
 
 if($env){
