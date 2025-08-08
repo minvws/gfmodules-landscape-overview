@@ -7,7 +7,6 @@ require_once __DIR__ . '/util.php';
 use Github\Client;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-error_log("HHIHIHEHIER");
 handleRequest('prs_proxy', 'fetch_github_data');
 
 function fetch_github_data(array $service) {
