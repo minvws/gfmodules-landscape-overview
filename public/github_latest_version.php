@@ -24,9 +24,13 @@ function fetch_github_data(array $service) {
 
     try {
         [$owner, $name] = explode('/', $repo, 2);
-        $prs = $client->pullRequest()->all($owner, $name, ['state' => 'open']);
-
-        return ['pull_requests' => count($prs)];
+        error_log("Fetching Github data for $owner $name");
+        $latest = $client->api('repo')->releases()->latest($owner, $name);
+        error_log("Latest release: " . json_encode($latest));
+        return [
+            'tag_name' => $latest['tag_name'],
+            'published_at' => $latest['published_at'],
+        ];
     } catch (Exception $e) {
         return ['error' => 'GitHub API error', 'detail' => $e->getMessage()];
     }
