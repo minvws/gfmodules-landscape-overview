@@ -73,29 +73,22 @@
     {
       "name": "Lokalisatie Register Service",
       "url": "https://lrs.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-register-service",
+      "github": "minvws/gfmodules-localization-register-service-private",
       "type": "Python",
       "has_version": true,
       "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
     },
     {
-      "name": "MCSD Consumer Admin",
-      "url": "https://mcsd-consumer-admin.test.gf.irealisatie.nl",
-      "github": "",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
       "name": "MCSD Consumer Update Client",
       "url": "https://mcsd-consumer.test.gf.prolocation.net",
-      "github": "",
+      "github": "minvws/gfmodules-mcsd-update-client",
       "type": "Python",
       "has_version": true
     },
     {
       "name": "MCSD Registratie Portaal",
       "url": "https://mcsd-registratie-portaal.test.gf.irealisatie.nl",
-      "github": "",
+      "github": "minvws/gfmodules-portal-register-private",
       "type": "PHP",
       "has_version": true
     },
@@ -109,7 +102,7 @@
     {
       "name": "National Referral Index",
       "url": "https://nvi.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-national-referral-index",
+      "github": "minvws/gfmodules-national-referral-index-private",
       "type": "Python",
       "has_version": true
     },
@@ -122,35 +115,28 @@
     {
       "name": "Toestemming Stub",
       "url": "https://otv-stub.test.gf.irealisatie.nl",
-      "github": "",
+      "github": "minvws/gfmodules-toestemming-stub-private",
       "type": "Python",
       "has_version": true
     },
     {
       "name": "Toestemmingsvoorziening Portaal",
       "url": "https://otv-web.test.gf.irealisatie.nl",
-      "github": "",
+      "github": "minvws/gfmodules-online-toestemmingsvoorziening-portaal-stub-private",
       "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "PRS",
-      "url": "https://pseudoniem.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-prs-private",
-      "type": "Python",
       "has_version": true
     },
     {
       "name": "PRS Stub",
       "url": "https://prs-stub.test.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-pseudonym-service",
+      "github": "minvws/gfmodules-pseudonym-stub-private",
       "type": "Python",
       "has_version": true,
       "description": "This is the stub for the Pseudonym Service."
     },
     {
       "name": "Grafana Statistics",
-      "url": "https://stats.test.gf.irealisatie.nl",
+      "url": "https://stats.test.gf.irealisatie.nl/grafana/",
       "github": "",
       "type": "Grafana",
       "has_version": false
@@ -189,15 +175,8 @@
     {
       "name": "Lokalisatie demo client",
       "url": "https://lokalisatie-demo.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-pgo-demo",
+      "github": "minvws/gfmodules-web-demo-private",
       "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "Lokalisatie Metadata Register",
-      "url": "https://lmr.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-metadata-register",
-      "type": "Python",
       "has_version": true
     },
     {
@@ -224,30 +203,23 @@
     {
       "name": "Lokalisatie Register Service",
       "url": "https://lrs.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-register-service",
+      "github": "minvws/gfmodules-localization-register-service-private",
       "type": "Python",
       "has_version": true,
       "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
     },
     {
-      "name": "MCSD Consumer Admin",
-      "url": "https://mcsd-consumer-admin.proeftuin.gf.irealisatie.nl",
-      "github": "",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
       "name": "MCSD Consumer Update Client",
       "url": "https://mcsd-consumer.proeftuin.gf.prolocation.net",
-      "github": "",
+      "github": "minvws/gfmodules-mcsd-update-client",
       "type": "Python",
       "has_version": true
     },
     {
       "name": "MCSD Registratie Portaal",
       "url": "https://mcsd-registratie-portaal.proeftuin.gf.irealisatie.nl",
-      "github": "",
-      "type": "Python",
+      "github": "minvws/gfmodules-portal-register-private",
+      "type": "PHP",
       "has_version": true
     },
     {
@@ -260,8 +232,8 @@
     {
       "name": "National Referral Index",
       "url": "https://nvi.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-national-referral-index",
-      "type": "PHP",
+      "github": "minvws/gfmodules-national-referral-index-private",
+      "type": "Python",
       "has_version": true,
       "description": "The National Referral Index manages the referrals to healthcare providers which have data for a certain pseudonym."
     },
@@ -274,7 +246,7 @@
     {
       "name": "Toestemming Stub",
       "url": "https://otv-stub.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-toestemming-stub",
+      "github": "minvws/gfmodules-toestemming-stub-private",
       "type": "Python",
       "has_version": true
     },
@@ -295,7 +267,7 @@
     {
       "name": "PRS Stub",
       "url": "https://prs-stub.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/nl-irealisatie-zmodules-pseudonym-service",
+      "github": "minvws/gfmodules-pseudonym-stub-private",
       "type": "Python",
       "has_version": true,
       "description": "This is the stub for the Pseudonym Service."
