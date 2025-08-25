@@ -17,13 +17,19 @@ function handleRequest(string $cacheNamespace, callable $action): void {
         directory: __DIR__ . '/../.cache'
     );
 
-    $service = getServiceFromRequestParams();
-    $data = getFromCache($cache, sha1($service['url']));
+    $env_path = getenv('ENV_PATH') ?: __DIR__ . '/..';
+    $dotenv = Dotenv\Dotenv::createImmutable($env_path);
+    $dotenv->load();
+
+    $env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
+
+    $service = getServiceFromRequestParams($env);
+    $data = getFromCache($cache, sha1($service['name']));
     $mtls = getMtlsConfig();
 
     if (!$data){
-        $data = $action($service, $mtls);
-        saveToCache($cache, sha1($service['url']), $data);
+        $data = $action($service, $env, $mtls);
+        saveToCache($cache, sha1($service['name']), $data);
     }
 
     header('Content-Type: application/json');
@@ -36,30 +42,11 @@ function handleRequest(string $cacheNamespace, callable $action): void {
  *
  * @return array The service
  */
-function getServiceFromRequestParams(): array{
-    $env_path = getenv('ENV_PATH') ?: __DIR__ . '/..';
-    $dotenv = Dotenv\Dotenv::createImmutable($env_path);
-    $dotenv->load();
-
-    $env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
-
+function getServiceFromRequestParams(string $env): array{
     // Get requested Service
     if (!isset($_GET['service'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing service parameter']);
-        exit;
-    }
-
-    // Get requested Env
-    if (!isset($_GET['env'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Missing env parameter']);
-        exit;
-    }
-
-    if (isset($env) && $env !== $_GET['env']) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Environment not allowed']);
         exit;
     }
 
@@ -73,14 +60,14 @@ function getServiceFromRequestParams(): array{
         exit;
     }
     $data = json_decode(file_get_contents($settingsFile), true);
-    if (empty($data) || !is_array($data) || !isset($data[$envName]) || !is_array($data[$envName])) {
+    if (empty($data) || !is_array($data)) {
         http_response_code(400);
         echo json_encode(['Service' => 'Requested service not found']);
         exit;
     }
     // Search for the service by name
-    foreach ($data[$envName] as $service) {
-        if (isset($service['name']) && $service['name'] === $serviceName) {
+    foreach ($data as $service) {
+        if (isset($service['name']) && $service['name'] === $serviceName && array_key_exists($envName, $service['environments'])) {
             return $service;
         }
     }

@@ -18,6 +18,7 @@ function fetch_github_data(array $service) {
     $client = new Client();
 
     $token = $_ENV['GITHUB_TOKEN'] ?? null;
+
     if ($token) {
         $client->authenticate($token, null, Client::AUTH_ACCESS_TOKEN);
     }

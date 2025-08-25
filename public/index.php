@@ -9,17 +9,7 @@ $env_path = getenv('ENV_PATH') ?: __DIR__ . '/..';
 $dotenv = Dotenv\Dotenv::createImmutable($env_path);
 $dotenv->load();
 
+$services = json_decode(file_get_contents(__DIR__ . '/../services.json'), true);
 $env = $_ENV['SERVICES_ENVIRONMENT']  ?: null;
 
-$services = json_decode(file_get_contents(__DIR__ . '/../services.json'), true);
-
-if($env){
-    if(!array_key_exists($env, $services)){
-        http_response_code(500);
-        echo 'Environment not found';
-        exit;
-    }
-    $services = [$env => $services[$env]];
-}
-
-echo $twig->render('index.twig', ['services' => $services]);
+echo $twig->render('index.twig', ['env' => $env, 'services' => $services]);

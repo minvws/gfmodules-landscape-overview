@@ -9,8 +9,8 @@ use GuzzleHttp\Exception\RequestException;
 
 handleRequest('version_proxy', 'fetch_version_info');
 
-function fetch_version_info(array $service) {
-    $mtls = getMtlsConfig();
+function fetch_version_info(array $service, string $env, array $mtls): array
+{
     $client = new Client([
         'timeout' => 4,
         'headers' => [
@@ -21,11 +21,11 @@ function fetch_version_info(array $service) {
     ]);
     try {
         if(strcmp($service['type'], "HAPI") == 0){
-            $response = $client->get($service['version_url'] ?? $service['url'] . '/fhir/metadata');
+            $response = $client->get($service['environments'][$env]['version_url'] ?? $service['environments'][$env]['url'] . '/fhir/metadata');
             $json = $response->getBody()->getContents();
             return json_decode($json, true)['software'];
         } else {
-            $response = $client->get($service['version_url'] ?? $service['url'] . '/version.json');
+            $response = $client->get($service['environments'][$env]['version_url'] ?? $service['environments'][$env]['url'] . '/version.json');
             $json = $response->getBody()->getContents();
             return json_decode($json, true);
         }
