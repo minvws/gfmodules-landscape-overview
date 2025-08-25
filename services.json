@@ -1,294 +1,330 @@
-{
-  "miscellaneous": [
-    {
-      "name": "Infrastructure overview",
-      "url": "https://landing.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-landscape-overview",
-      "type": "PHP",
-      "has_version": false,
-      "description": "You are here."
+[
+  {
+    "name": "Documentation",
+    "environments": {
+      "test": {
+        "url": "https://fdocs.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://generiekefuncties.datavoorgezondheid.nl"
+      }
     },
-    {
-      "name": "Integration Test Suite",
-      "url": "https://orac.test.gf.irealisatie.nl",
-      "github": "",
-      "type": "Python",
-      "has_version": true,
-      "description": "This service is used for integration testing of the system."
-    }
-  ],
-  "testing": [
-    {
-      "name": "Adresseringsdienst",
-      "url": "https://adressering.test.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": true,
-      "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
+    "github": "minvws/gfmodules-functional-documentation",
+    "type": "Sphinx",
+    "has_version": true,
+    "description": "This is the documentation for the functional aspects of the system."
+  },
+  {
+    "name": "Nationale Verwijsindex (NVI)",
+    "environments": {
+      "coordination": {
+        "url": "https://nvi",
+        "external_url": "https://localhost:8541"
+      },
+      "test": {
+        "url": "https://nvi.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://nvi.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Max (inge6)",
-      "url": "https://emax.test.gf.irealisatie.nl",
-      "version_url": "https://emax.test.gf.irealisatie.nl/static/version.json",
-      "type": "Python",
-      "github": "minvws/nl-rdo-max-private",
-      "has_version": true,
-      "description": "This is the login service, this will provide eHerkenning SAML to OIDC bridge."
+    "github": "minvws/gfmodules-national-referral-index-private",
+    "type": "Python",
+    "has_version": true,
+    "description": "The Nationale Verwijsindex stores referrals to organizations that contains data for a given Pseudonym."
+  },
+  {
+    "name": "Lokalisatie Register Service (LRS)",
+    "environments": {
+      "coordination": {
+        "url": "http://lrs:8505",
+        "external_url": "http://localhost:8505"
+      },
+      "test": {
+        "url": "https://lrs.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://lrs.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Documentation",
-      "url": "https://fdocs.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-functional-documentation",
-      "type": "Sphinx",
-      "has_version": true,
-      "description": "This is the documentation for the functional aspects of the system."
+    "github": "minvws/gfmodules-localization-register-service-private",
+    "type": "Python",
+    "has_version": true,
+    "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
+  },
+  {
+    "name": "mCSD Update Client",
+    "environments": {
+      "coordination": {
+        "url": "http://mcsd-update-client:8509",
+        "external_url": "http://localhost:8509"
+      },
+      "test": {
+        "url": "https://mcsd-consumer.test.gf.prolocation.net"
+      },
+      "proeftuin": {
+        "url": "https://mcsd-consumer.labs.gf.prolocation.net"
+      }
     },
-    {
-      "name": "Jaeger",
-      "url": "https://jaeger.test.gf.irealisatie.nl",
-      "type": "Jaeger",
-      "has_version": false,
-      "description": "This is the Jaeger service for tracing and monitoring."
+    "github": "minvws/gfmodules-mcsd-update-client",
+    "type": "Python",
+    "has_version": true,
+    "description": "This mCSD update client that fetches mCSD resources from registerd endpoints at the mCSD registratie portaal and stores them in the Adresseringsdienst."
+  },
+  {
+    "name": "Viewer",
+    "environments": {
+      "coordination": {
+        "url": "http://viewer",
+        "external_url": "http://localhost:8500"
+      },
+      "test": {
+        "url": "https://web.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://web.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "LMR Noord",
-      "url": "https://lmr-noord.test.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": true,
-      "description": "HAPI Storage system for LMR Noord."
+    "github": "minvws/gfmodules-viewer-web-private",
+    "type": "Laravel",
+    "has_version": true,
+    "description": "This is the 'Landingspagina' where a demo of the timeline is shown."
+  },
+  {
+    "name": "mCSD Registratie Portaal",
+    "environments": {
+      "coordination": {
+        "url": "http://portal-register",
+        "external_url": "http://localhost:8511"
+      },
+      "test": {
+        "url": "https://mcsd-registratie-portaal.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://mcsd-registratie-portaal.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "LMR Oost",
-      "url": "https://lmr-oost.test.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": true,
-      "description": "HAPI Storage system for LMR Oost."
+    "github": "minvws/gfmodules-portal-register-private",
+    "type": "Laravel",
+    "has_version": true,
+    "description": "At this portal organizations can provide their mCSD directory so that other organizations can use this directory."
+  },
+  {
+    "name": "Max (inge6)",
+    "environments": {
+      "test": {
+        "url": "https://emax.test.gf.irealisatie.nl",
+        "version_url": "https://emax.test.gf.irealisatie.nl/static/version.json"
+      }
     },
-    {
-      "name": "LMR Zuid",
-      "url": "https://lmr-zuid.test.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": true,
-      "description": "HAPI Storage system for LMR Zuid."
+    "type": "Python",
+    "github": "minvws/nl-rdo-max-private",
+    "has_version": true,
+    "description": "This is the login service, this will provide eHerkenning SAML to OIDC bridge."
+  },
+  {
+    "name": "Toestemmingsvoorziening Portaal",
+    "environments": {
+      "coordination": {
+        "url": "http://online-toestemmingsvoorziening-portaal-stub",
+        "external_url": "http://localhost:8512"
+      },
+      "test": {
+        "url": "https://otv-web.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://otv-web.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Lokalisatie Register Service",
-      "url": "https://lrs.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-register-service-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
+    "github": "minvws/gfmodules-online-toestemmingsvoorziening-portaal-stub-private",
+    "type": "Laravel",
+    "has_version": true,
+    "description": "This is a Stub implementation for a portaal where a Citizen can manage his Healhcare permissions."
+  },
+  {
+    "name": "Toestemming Stub",
+    "environments": {
+      "coordination": {
+        "url": "http://toestemming-stub:8507",
+        "external_url": "http://localhost:8507"
+      },
+      "test": {
+        "url": "https://otv-stub.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://otv-stub.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "MCSD Consumer Update Client",
-      "url": "https://mcsd-consumer.test.gf.prolocation.net",
-      "github": "minvws/gfmodules-mcsd-update-client",
-      "type": "Python",
-      "has_version": true
+    "github": "minvws/gfmodules-toestemming-stub-private",
+    "type": "Python",
+    "has_version": true,
+    "description": "This is a Stub implementation for the API where permissions of citizens are stored."
+  },
+  {
+    "name": "PRS Stub",
+    "environments": {
+      "coordination": {
+        "url": "http://prs-stub:8504",
+        "external_url": "http://localhost:8504"
+      },
+      "test": {
+        "url": "https://prs-stub.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://prs-stub.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "MCSD Registratie Portaal",
-      "url": "https://mcsd-registratie-portaal.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-portal-register-private",
-      "type": "PHP",
-      "has_version": true
+    "github": "minvws/gfmodules-pseudonym-stub-private",
+    "type": "Python",
+    "has_version": true,
+    "description": "This is the stub for the Pseudonym Service."
+  },
+  {
+    "name": "Data administration portal",
+    "environments": {
+      "coordination": {
+        "url": "http://data-administration-portal",
+        "external_url": "http://localhost:8513"
+      }
     },
-    {
-      "name": "MCSD Supplier Service",
-      "url": "https://mcsd-supplier.test.gf.irealisatie.nl",
-      "github": "",
-      "type": "HAPI",
-      "has_version": false
+    "github": "minvws/gfmodules-data-administration-portal-private",
+    "type": "Laravel",
+    "has_version": true,
+    "description": "This portal can be used to explore organizations on a FHIR directory."
+  },
+  {
+    "name": "Adresseringsdienst",
+    "environments": {
+      "coordination": {
+        "url": "http://adressering:9503",
+        "external_url": "http://localhost:9503"
+      },
+      "test": {
+        "url": "https://adressering.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://adressering.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "National Referral Index",
-      "url": "https://nvi.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-national-referral-index-private",
-      "type": "Python",
-      "has_version": true
+    "type": "HAPI",
+    "has_version": true,
+    "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
+  },
+  {
+    "name": "LMR Noord",
+    "environments": {
+      "coordination": {
+        "url": "http://lmr-noord:9500",
+        "external_url": "http://localhost:9500"
+      },
+      "test": {
+        "url": "https://lmr-noord.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://lmr-noord.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Open Policy Agent",
-      "url": "https://opa.test.gf.prolocation.net",
-      "type": "Custom",
-      "has_version": false
+    "type": "HAPI",
+    "has_version": true,
+    "description": "An example LMR (LMR Noord)"
+  },
+  {
+    "name": "LMR Oost",
+    "environments": {
+      "coordination": {
+        "url": "http://lmr-oost:9501",
+        "external_url": "http://localhost:9501"
+      },
+      "test": {
+        "url": "https://lmr-oost.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://lmr-oost.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Toestemming Stub",
-      "url": "https://otv-stub.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-toestemming-stub-private",
-      "type": "Python",
-      "has_version": true
+    "type": "HAPI",
+    "has_version": true,
+    "description": "An example LMR (LMR Oost)"
+  },
+  {
+    "name": "LMR Zuid",
+    "environments": {
+      "coordination": {
+        "url": "http://lmr-zuid:9502",
+        "external_url": "http://localhost:9502"
+      },
+      "test": {
+        "url": "https://lmr-zuid.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://lmr-zuid.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "Toestemmingsvoorziening Portaal",
-      "url": "https://otv-web.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-online-toestemmingsvoorziening-portaal-stub-private",
-      "type": "PHP",
-      "has_version": true
+    "type": "HAPI",
+    "has_version": true,
+    "description": "An example LMR (LMR Zuid)"
+  },
+  {
+    "name": "mCSD directory",
+    "environments": {
+      "coordination": {
+        "url": "http://mcsd-directory:9504",
+        "external_url": "http://localhost:9504"
+      },
+      "test": {
+        "url": "https://mcsd-supplier.test.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://mcsd-supplier.proeftuin.gf.irealisatie.nl"
+      }
     },
-    {
-      "name": "PRS Stub",
-      "url": "https://prs-stub.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-pseudonym-stub-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "This is the stub for the Pseudonym Service."
+    "type": "HAPI",
+    "has_version": true,
+    "description": "This FHIR store is used as an example FHIR mCSD directory to provide organizations and endpoints."
+  },
+  {
+    "name": "Open Policy Agent",
+    "environments": {
+      "test": {
+        "url": "https://opa.test.gf.prolocation.net"
+      },
+      "proeftuin": {
+        "url": "https://opa.labs.gf.prolocation.net"
+      }
     },
-    {
-      "name": "Grafana Statistics",
-      "url": "https://stats.test.gf.irealisatie.nl/grafana/",
-      "github": "",
-      "type": "Grafana",
-      "has_version": false
+    "type": "Custom",
+    "has_version": false
+  },
+  {
+    "name": "Grafana Statistics",
+    "environments": {
+      "test": {
+        "url": "https://stats.test.gf.irealisatie.nl/grafana/"
+      },
+      "proeftuin": {
+        "url": "https://stats.proeftuin.gf.irealisatie.nl/grafana/"
+      }
     },
-    {
-      "name": "Viewer",
-      "url": "https://web.test.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-viewer-web-private",
-      "type": "PHP",
-      "has_version": true
-    }
-  ],
-  "proeftuin": [
-    {
-      "name": "Adresseringsdienst",
-      "url": "https://adressering.proeftuin.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": false,
-      "description": "The Addressing Service manages the translation between healthcare providers and the endpoints where the metadata can be retrieved."
+    "github": "",
+    "type": "Grafana",
+    "has_version": false
+  },
+  {
+    "name": "Jaeger",
+    "environments": {
+      "coordination": {
+        "url": "http://jaeger:16686",
+        "external_url": "http://localhost:16686"
+      },
+      "test": {
+        "url": "https://jaeger.proeftuin.gf.irealisatie.nl"
+      },
+      "proeftuin": {
+        "url": "https://jaeger.labs.gf.prolocation.net"
+      }
     },
-    {
-      "name": "Documentation",
-      "url": "https://fdocs.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-functional-documentation",
-      "type": "Sphinx",
-      "has_version": false,
-      "description": "generiekefuncties.datavoorgezondheid.nl"
-    },
-    {
-      "name": "Jaeger",
-      "url": "https://jaeger.proeftuin.gf.irealisatie.nl",
-      "type": "Jaeger",
-      "has_version": false,
-      "description": "This is the Jaeger service for tracing and monitoring."
-    },
-    {
-      "name": "Lokalisatie demo client",
-      "url": "https://lokalisatie-demo.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-web-demo-private",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "LMR Noord",
-      "url": "https://lmr-noord.proeftuin.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": false,
-      "description": "HAPI Storage system for LMR Noord."
-    },
-    {
-      "name": "LMR Oost",
-      "url": "https://lmr-oost.proeftuin.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": false,
-      "description": "HAPI Storage system for LMR Oost."
-    },
-    {
-      "name": "LMR Zuid",
-      "url": "https://lmr-zuid.proeftuin.gf.irealisatie.nl",
-      "type": "HAPI",
-      "has_version": false,
-      "description": "HAPI Storage system for LMR Zuid."
-    },
-    {
-      "name": "Lokalisatie Register Service",
-      "url": "https://lrs.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-localization-register-service-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "The localisation Register Services delivers the service to clients to fetch an aggregated timeline of the localized Metadata Registers."
-    },
-    {
-      "name": "MCSD Consumer Update Client",
-      "url": "https://mcsd-consumer.proeftuin.gf.prolocation.net",
-      "github": "minvws/gfmodules-mcsd-update-client",
-      "type": "Python",
-      "has_version": true
-    },
-    {
-      "name": "MCSD Registratie Portaal",
-      "url": "https://mcsd-registratie-portaal.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-portal-register-private",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "MCSD Supplier Service",
-      "url": "https://mcsd-supplier.proeftuin.gf.irealisatie.nl",
-      "github": "",
-      "type": "HAPI",
-      "has_version": false
-    },
-    {
-      "name": "National Referral Index",
-      "url": "https://nvi.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-national-referral-index-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "The National Referral Index manages the referrals to healthcare providers which have data for a certain pseudonym."
-    },
-    {
-      "name": "Open Policy Agent",
-      "url": "https://opa.labs.gf.prolocation.net",
-      "type": "Custom",
-      "has_version": false
-    },
-    {
-      "name": "Toestemming Stub",
-      "url": "https://otv-stub.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-toestemming-stub-private",
-      "type": "Python",
-      "has_version": true
-    },
-    {
-      "name": "Toestemmingsvoorziening Portaal",
-      "url": "https://otv-web.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-online-toestemmingsvoorziening-portaal-stub-private",
-      "type": "PHP",
-      "has_version": true
-    },
-    {
-      "name": "PRS",
-      "url": "https://pseudoniem.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-prs-private",
-      "type": "Python",
-      "has_version": true
-    },
-    {
-      "name": "PRS Stub",
-      "url": "https://prs-stub.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-pseudonym-stub-private",
-      "type": "Python",
-      "has_version": true,
-      "description": "This is the stub for the Pseudonym Service."
-    },
-    {
-      "name": "Grafana Statistics",
-      "url": "https://stats.proeftuin.gf.irealisatie.nl",
-      "github": "",
-      "type": "Grafana",
-      "has_version": false
-    },
-    {
-      "name": "Viewer",
-      "url": "https://web.proeftuin.gf.irealisatie.nl",
-      "github": "minvws/gfmodules-viewer-web-private",
-      "type": "PHP",
-      "has_version": true
-    }
-  ],
-  "staging": [
-  ],
-  "production": [
-  ]
-}
+    "type": "Jaeger",
+    "has_version": false,
+    "description": "This is the Jaeger service for tracing and monitoring."
+  }
+]

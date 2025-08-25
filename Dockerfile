@@ -18,7 +18,6 @@ COPY Caddyfile /etc/caddy/Caddyfile
 # Install PHP dependencies
 WORKDIR /app
 COPY . /app
-RUN rm /app/services.json
 RUN composer install --no-dev --no-scripts --no-progress
 
 # Expose ports

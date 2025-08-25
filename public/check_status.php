@@ -12,9 +12,8 @@ handleRequest('status_checker', 'fetch_http_status');
 /**
  * Fetch HTTP status for a given URL
  */
-function fetch_http_status(array $service): array
+function fetch_http_status(array $service, string $env, array $mtls): array
 {
-    $mtls = getMtlsConfig();
     $client = new Client([
         'timeout' => 4,
         'allow_redirects' => [
@@ -33,17 +32,17 @@ function fetch_http_status(array $service): array
     ]);
 
     try {
-        $response = $client->get($service['url'], [
+        $response = $client->get($service['environments'][$env]['url'], [
             'connect_timeout' => 2
         ]);
 
         $status = $response->getStatusCode();
-        $finalUrl = $service['url'];
+        $finalUrl = $service['environments'][$env]['url'];
 
         // Get final URL after redirects
         if ($response->hasHeader('X-Guzzle-Redirect-History')) {
             $redirects = $response->getHeader('X-Guzzle-Redirect-History');
-            $finalUrl = end($redirects) ?: $service['url'];
+            $finalUrl = end($redirects) ?: $service['environments'][$env]['url'];
         }
         return [
             'http_status' => $status,
@@ -55,14 +54,14 @@ function fetch_http_status(array $service): array
         return [
             'error' => 'connection_failed',
             'details' => $e->getMessage(),
-            'url' => $service['url'],
+            'url' => $service['environments'][$env]['url'],
             'timestamp' => time()
         ];
     } catch (ConnectException $e) {
         return [
             'error' => 'host_not_found',
             'details' => $e->getMessage(),
-            'url' => $service['url'],
+            'url' => $service['environments'][$env]['url'],
             'timestamp' => time()
         ];
     }
