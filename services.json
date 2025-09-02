@@ -110,7 +110,7 @@
     "description": "At this portal organizations can provide their mCSD directory so that other organizations can use this directory."
   },
   {
-    "name": "Max (inge6)",
+    "name": "Max",
     "environments": {
       "test": {
         "url": "https://emax.test.gf.irealisatie.nl",
