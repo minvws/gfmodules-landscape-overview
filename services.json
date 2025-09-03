@@ -283,17 +283,22 @@
     "description": "This FHIR store is used as an example FHIR mCSD directory to provide organizations and endpoints."
   },
   {
-    "name": "Open Policy Agent",
+    "name": "mCSD directories register",
     "environments": {
+      "coordination": {
+        "url": "http://portal-hapi:9505",
+        "external_url": "http://localhost:9505"
+      },
       "test": {
-        "url": "https://opa.test.gf.prolocation.net"
+        "url": "https://mcsd-registratie-directory.test.gf.irealisatie.nl"
       },
       "proeftuin": {
-        "url": "https://opa.labs.gf.prolocation.net"
+        "url": ""
       }
     },
-    "type": "Custom",
-    "has_version": false
+    "type": "HAPI",
+    "has_version": true,
+    "description": "This FHIR store is a register for the mcsd-registratie-portaal"
   },
   {
     "name": "Grafana Statistics",
