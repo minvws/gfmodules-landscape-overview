@@ -283,7 +283,7 @@
     "description": "This FHIR store is used as an example FHIR mCSD directory to provide organizations and endpoints."
   },
   {
-    "name": "mCSD directory register",
+    "name": "mCSD directories register",
     "environments": {
       "coordination": {
         "url": "http://portal-hapi:9505",
@@ -298,7 +298,7 @@
     },
     "type": "HAPI",
     "has_version": true,
-    "description": "This FHIR store is an register for the data-administration portal"
+    "description": "This FHIR store is a register for the mcsd-registratie-portaal"
   },
   {
     "name": "Grafana Statistics",
