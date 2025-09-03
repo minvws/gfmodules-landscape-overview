@@ -283,7 +283,7 @@
     "description": "This FHIR store is used as an example FHIR mCSD directory to provide organizations and endpoints."
   },
   {
-    "name": "mCSD Directory Registratie Portaal",
+    "name": "mCSD directory register",
     "environments": {
       "coordination": {
         "url": "http://portal-hapi:9505",
