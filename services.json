@@ -290,7 +290,7 @@
         "external_url": "http://localhost:9505"
       },
       "test": {
-        "url": "https://mcsd-registratie-directory.test.gf.irealisatie.nl/fhir"
+        "url": "https://mcsd-registratie-directory.test.gf.irealisatie.nl"
       },
       "proeftuin": {
         "url": ""
