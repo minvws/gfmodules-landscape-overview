@@ -10,15 +10,26 @@ There is a simple `.env` that allows you to set some configuration options. You 
 
 # Docker
 
-You can run the docker container:
+You can build and run the Docker container:
 
 ```bash
-docker build -t landscape .
-docker run -d -p 9999:80 landscape
+docker build -t gfmodules-landscape-overview .
+docker run -d --name gfmodules-landscape-overview -p 9999:80 gfmodules-landscape-overview
 ```
 
 Now you can access the application at `localhost:9999`.
 
+To stop the running container:
+
+```bash
+docker stop gfmodules-landscape-overview
+```
+
+To remove the container (after stopping):
+
+```bash
+docker rm gfmodules-landscape-overview
+```
 
 # Running locally
 It's also possible to run this locally. For this, we need to have a running php-fpm and have caddy installed.

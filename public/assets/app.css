@@ -1,0 +1,104 @@
+body {
+    font-family: sans-serif;
+    background: #f0f0f0;
+    padding: 2rem;
+}
+h1 {
+    text-align: center;
+}
+.env {
+    margin-bottom: 3rem;
+}
+.env-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid #007acc;
+    padding-left: 0.5rem;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+th, td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background: #007acc;
+    color: white;
+    text-align: left;
+}
+td a {
+    color: #007acc;
+    text-decoration: none;
+}
+.pr-count, .version .latest-version {
+    font-family: monospace;
+    color: #333;
+}
+
+tbody tr:hover {
+    background-color: #e0f3ff;
+    cursor: pointer;
+}
+
+.env-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid #007acc;
+    padding-left: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.env.collapsed table {
+    display: none;
+}
+
+.env.collapsed .env-title::before {
+    content: " ▶";
+}
+
+.env:not(.collapsed) .env-title::before {
+    content: " ▼";
+}
+
+th {
+    cursor: pointer;
+    position: relative;
+}
+
+th::after {
+    content: " ⇅";
+    font-size: 0.8rem;
+    color: #fff;
+    position: absolute;
+    right: 8px;
+}
+
+th.sort-asc::after {
+    content: " ▲";
+    color: #fff;
+}
+
+th:not(.sort-asc)::after {
+    content: " ▼";
+    color: #fff;
+}
+
+.status.success {
+    color: #2e7d32;
+}
+.status.redirect {
+    color: #0288d1;
+}
+.status.client-error {
+    color: #d32f2f;
+}
+.status.server-error {
+    color: #ed6c02;
+}
+.status.unknown {
+    color: #757575;
+}
