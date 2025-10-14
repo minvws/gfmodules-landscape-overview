@@ -110,19 +110,6 @@
     "description": "At this portal organizations can provide their mCSD directory so that other organizations can use this directory."
   },
   {
-    "name": "Max",
-    "environments": {
-      "test": {
-        "url": "https://emax.test.gf.irealisatie.nl",
-        "version_url": "https://emax.test.gf.irealisatie.nl/static/version.json"
-      }
-    },
-    "type": "Python",
-    "github": "minvws/nl-rdo-max-private",
-    "has_version": true,
-    "description": "This is the login service, this will provide eHerkenning SAML to OIDC bridge."
-  },
-  {
     "name": "Toestemmingsvoorziening Portaal",
     "environments": {
       "coordination": {
