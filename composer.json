@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "php": ">=8.4",
         "twig/twig": "^3.21",
         "knplabs/github-api": "^3.16",
         "symfony/http-client": "^7.2",
