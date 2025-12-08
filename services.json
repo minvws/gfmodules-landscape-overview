@@ -9,7 +9,7 @@
         "url": "https://generiekefuncties.datavoorgezondheid.nl"
       }
     },
-    "github": "minvws/gfmodules-functional-documentation",
+    "github": "minvws/gfmodules-functionele-documentatie",
     "type": "Sphinx",
     "has_version": true,
     "description": "This is the documentation for the functional aspects of the system."
