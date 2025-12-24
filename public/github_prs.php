@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 // Proxy script for fetching Github pull request info
 
 require_once __DIR__ . '/util.php';
 
 use Github\Client;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 handleRequest('prs_proxy', 'fetch_github_data');
 
-function fetch_github_data(array $service) {
+function fetch_github_data(array $service)
+{
     $repo = $service['github'] ?? null;
     error_log("Fetching Github data for $repo");
     if (!$repo) {
@@ -28,7 +30,7 @@ function fetch_github_data(array $service) {
         $prs = $client->pullRequest()->all($owner, $name, ['state' => 'open']);
 
         return ['pull_requests' => count($prs)];
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         return ['error' => 'GitHub API error', 'detail' => $e->getMessage()];
     }
 }

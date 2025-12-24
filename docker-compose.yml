@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  landscape-overview:
+    build: 
+      context: .
+      args:
+        - NO_DEV=false # Set to false as this docker compose is only used for local development as is
+    container_name: landscape-overview
+    env_file:
+      - .env
+    volumes:
+      - ./services.json:/app/services.json:ro
+      - ./mgo-services.json:/app/mgo-services.json:ro
+      - ./phpcs.xml:/app/phpcs.xml:ro
+      - ./composer.json:/app/composer.json
+      - ./composer.lock:/app/composer.lock
+      - ./public:/app/public
+      - ./templates:/app/templates
+    ports:
+      - "9999:80"
+    restart: unless-stopped

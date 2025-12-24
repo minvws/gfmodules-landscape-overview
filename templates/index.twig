@@ -2,60 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GFModules Overview</title>    
+    <title>{{ app_name }}</title>    
     <link rel="stylesheet" href="assets/app.css">
 </head>
 <body>
-    <h1>GFModules Overview</h1>
+    <h1>{{ app_name }}</h1>
 
-    <div class="env">
-        <div class="env-title" onclick="toggleTable(this)">
-            {{ env|capitalize }} environment
-        </div>
-        <table>
-            <thead>
-            <tr>
-                <th style="width: 33%;" onclick="sortTable(this)">Service</th>
-                <th onclick="sortTable(this)">Type</th>
-                <th onclick="sortTable(this)">URL</th>
-                <th onclick="sortTable(this)">HTTP Status</th>
-                <th onclick="sortTable(this)">Version</th>
-                <th onclick="sortTable(this)">GitHub Latest Version</th>
-                <th onclick="sortTable(this)">GitHub</th>
-                <th onclick="sortTable(this)">Open PRs</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for service in services | filter(service => service.environments[env] )%}
+    {% for env in envs %}
+        <div class="env">
+            <div class="env-title" onclick="toggleTable(this)">
+                {{ env|capitalize }} environment
+            </div>
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ service.name }}<br><small>{{ service.description }}</small></td>
-                    <td>{{ service.type|default('—') }}</td>
-                    <td><a href="{{ service.environments[env].external_url ?? service.environments[env].url }}" target="_blank">{{ service.environments[env].external_url ?? service.environments[env].url }}</a></td>
-                    <td class="status" data-status-service="{{ service.name }}" data-status-env="{{ env }}">Loading…</td>
-                    <td class="version">
-                        {% if service.has_version %}
-                            <span data-version-service="{{ service.name }}" data-version-env="{{ env }}">Loading…</span>
+                    <th style="width: 33%;" onclick="sortTable(this)">Service</th>
+                    <th onclick="sortTable(this)">Type</th>
+                    <th onclick="sortTable(this)">URL</th>
+                    <th onclick="sortTable(this)">HTTP Status</th>
+                    <th onclick="sortTable(this)">Version</th>
+                    <th onclick="sortTable(this)">GitHub Latest Version</th>
+                    <th onclick="sortTable(this)">GitHub</th>
+                    <th onclick="sortTable(this)">Open PRs</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for service in services | filter(service => service.environments[env] )%}
+                    <tr>
+                        <td>{{ service.name }}<br><small>{{ service.description }}</small></td>
+                        <td>{{ service.type|default('—') }}</td>
+                        <td><a href="{{ service.environments[env].external_url ?? service.environments[env].url }}" target="_blank">{{ service.environments[env].external_url ?? service.environments[env].url }}</a></td>
+                        <td class="status" data-status-service="{{ service.name }}" data-status-env="{{ env }}">Loading…</td>
+                        <td class="version">
+                            {% if service.has_version %}
+                                <span data-version-service="{{ service.name }}" data-version-env="{{ env }}">Loading…</span>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+
+                        {% if service.github %}
+                            <td class="latest-version" data-github-version-service="{{ service.name }}" data-github-version-env="{{ env }}">Loading…</td>
+                            <td><a href="https://github.com/{{ service.github }}" target="_blank">GitHub</a></td>
+                            <td class="pr-count" data-github-service="{{ service.name }}" data-github-env="{{ env }}">Loading…</td>
                         {% else %}
-                            —
+                            <td colspan="3">—</td>
                         {% endif %}
-                    </td>
-
-                    {% if service.github %}
-                        <td class="latest-version" data-github-version-service="{{ service.name }}" data-github-version-env="{{ env }}">Loading…</td>
-                        <td><a href="https://github.com/{{ service.github }}" target="_blank">GitHub</a></td>
-                        <td class="pr-count" data-github-service="{{ service.name }}" data-github-env="{{ env }}">Loading…</td>
-                    {% else %}
-                        <td colspan="3">—</td>
-                    {% endif %}
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">No services found in this environment</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8">No services found in this environment</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
     <script src="assets/app.js"></script>
 </body>
 </html>

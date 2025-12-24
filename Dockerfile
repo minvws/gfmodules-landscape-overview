@@ -18,7 +18,10 @@ COPY Caddyfile /etc/caddy/Caddyfile
 # Install PHP dependencies
 WORKDIR /app
 COPY . /app
-RUN composer install --no-dev --no-scripts --no-progress
+
+ARG NO_DEV=true
+
+RUN if [ "$NO_DEV" = "true" ]; then composer install --no-dev --no-scripts --no-progress; else composer install --no-scripts --no-progress; fi
 
 # Expose ports
 EXPOSE 80
