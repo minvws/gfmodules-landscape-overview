@@ -83,7 +83,7 @@
         "environments": {
             "test": {
                 "url": "https://cbp.test.mgo.irealisatie.nl",
-                "version_url": "https://cbp.test.mgo.irealisatie.nl/api/version",
+                "version_url": "https://cbp.test.mgo.irealisatie.nl/version.json",
                 "basic_auth": {
                     "username_env": "BASIC_AUTH_MGO_USERNAME",
                     "password_env": "BASIC_AUTH_MGO_PASSWORD"
