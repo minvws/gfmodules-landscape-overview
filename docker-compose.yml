@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   landscape-overview:
     build: 

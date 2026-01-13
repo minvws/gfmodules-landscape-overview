@@ -39,7 +39,7 @@ function fetch_http_status(array $service, ?string $env, array $mtls): array
             'track_redirects' => true,
         ],
         'headers' => [
-            'User-Agent' => 'GFModules Status Checker/1.0',
+            'User-Agent' => sprintf('%s Status Checker/1.0', getAppName()),
         ],
         'http_errors' => false, // Don't throw exceptions for 4xx/5xx
         'cert' => $mtls['cert'] ?? null,

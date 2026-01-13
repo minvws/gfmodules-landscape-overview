@@ -66,7 +66,7 @@ Note that you might need to change the socket path in the Caddyfile.local to mat
 The application uses a caching mechanism to store the results of the Github API calls and versioning.
 There is a default of 5 minute timeout on the cache.
 
-# Settings.json
+# Services configuration
 
 All service definitions live in a JSON file in the repository root. By default the app uses `services.json`; set `SERVICES_FILE` to use another file such as `mgo-services.json`.
 
@@ -80,7 +80,7 @@ All service definitions live in a JSON file in the repository root. By default t
       },
       "acceptance": {
         "url": "https://service.acceptance.example.com"
-      },
+      }
     },
     "github": "owner/repo",
     "type": "Python",

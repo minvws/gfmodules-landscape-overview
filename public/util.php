@@ -13,8 +13,10 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  *
  * @param string $cacheNamespace The namespace for the cache.
  * @param callable $action The action to execute if the data is not cached.
+ *
+ * @throws \Psr\Cache\InvalidArgumentException
  */
-function handleRequest(string $cacheNamespace, callable $action): void
+function handleRequest(string $cacheNamespace, callable $action): never
 {
     $cache = new FilesystemAdapter(
         namespace: $cacheNamespace,
@@ -26,37 +28,12 @@ function handleRequest(string $cacheNamespace, callable $action): void
     $dotenv = Dotenv::createImmutable($env_path);
     $dotenv->load();
 
-    $env = $_ENV['SERVICES_ENVIRONMENT'] ?: null;
-
-    $service = getServiceFromRequestParams($env);
-
-    if (isset($_GET['env'])) {
-        $requestedEnv = $_GET['env'];
-
-        if (!is_string($requestedEnv)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Invalid environment parameter']);
-            exit;
-        }
-
-        if (
-            !isset($service['environments']) ||
-            !is_array($service['environments']) ||
-            !array_key_exists($requestedEnv, $service['environments'])
-        ) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Unknown environment']);
-            exit;
-        }
-
-        $env = $requestedEnv;
-    }
+    [$environment, $service] = getEnvironmentAndServiceFromRequest();
 
     $data = getFromCache($cache, sha1($service['name']));
-    $mtls = getMtlsConfig();
 
     if (!$data) {
-        $data = $action($service, $env, $mtls);
+        $data = $action($service, $environment, getMtlsConfig());
         saveToCache($cache, sha1($service['name']), $data);
     }
 
@@ -65,56 +42,86 @@ function handleRequest(string $cacheNamespace, callable $action): void
     exit;
 }
 
-function getServicesFilePath(): string
+/**
+ * Returns the services from the configuration file.
+ *
+ * @return array The services array
+ */
+function getConfiguredServices(): array
 {
-    $servicesFile = $_ENV['SERVICES_FILE'] ?? 'services.json';
+    $filename = $_ENV['SERVICES_FILE'] ?? 'services.json';
 
-    if (str_starts_with($servicesFile, DIRECTORY_SEPARATOR)) {
-        return $servicesFile;
+    if (!str_starts_with($filename, DIRECTORY_SEPARATOR)) {
+        $filename = __DIR__ . '/../' . ltrim($filename, '/');
     }
 
-    return __DIR__ . '/../' . $servicesFile;
+    if (!is_file($filename)) {
+        http_response_code(500);
+        exit('Failed to load services configuration');
+    }
+
+    try {
+        return json_decode(file_get_contents($filename), true, flags: JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        error_log(sprintf("%s\n%s", $e, $e->getTraceAsString()));
+        http_response_code(500);
+        exit('Failed to load services configuration');
+    }
 }
 
 /**
- * Fetches service from configuration and checks if it is allowed.
+ * Returns preconfigured service matching query filters if any.
+ * Otherwise, returns an error.
  *
- * @return array The service
+ * @return array{0: string, 1: array<string, mixed>} A list containing the requested environment and service
  */
-function getServiceFromRequestParams(?string $env): array
+function getEnvironmentAndServiceFromRequest(): array
 {
-    // Get requested Service
-    if (!isset($_GET['service'])) {
+    $requestedEnvironment = $_GET['env'] ?? null;
+
+    if (empty($requestedEnvironment)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Missing service parameter']);
-        exit;
+        exit('Missing query parameter: \'env\'');
     }
 
-    $settingsFile = getServicesFilePath();
-    $serviceName = $_GET['service'];
-    $envName = $_GET['env'];
+    $configuredEnvironment = getEnvironmentFromConfig();
 
-    if (!file_exists($settingsFile)) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Config missing']);
-        exit;
-    }
-    $data = json_decode(file_get_contents($settingsFile), true);
-    if (empty($data) || !is_array($data)) {
+    if ($configuredEnvironment !== null && $configuredEnvironment !== $requestedEnvironment) {
         http_response_code(400);
-        echo json_encode(['Service' => 'Requested service not found']);
-        exit;
-    }
-    // Search for the service by name
-    foreach ($data as $service) {
-        if (isset($service['name']) && $service['name'] === $serviceName && array_key_exists($envName, $service['environments'])) {
-            return $service;
-        }
+        exit('Query parameter \'env\' does not match configured environment');
     }
 
-    http_response_code(400);
-    echo json_encode(['Service' => 'Requested service not found']);
-    exit;
+    $requestedService = $_GET['service'] ?? null;
+
+    if (empty($requestedService)) {
+        http_response_code(400);
+        exit('Missing query parameter: \'service\'');
+    }
+
+    $services = getConfiguredServices();
+    $matchedService = array_find(
+        $services,
+        static function (array $service) use ($requestedService, $requestedEnvironment): bool {
+            $name = $service['name'] ?? null;
+            $environments = array_keys($service['environments'] ?? []);
+
+            return $name === $requestedService && in_array($requestedEnvironment, $environments);
+        },
+    );
+
+    if ($matchedService === null) {
+        http_response_code(400);
+        exit('No service found matching the given name and environment');
+    }
+
+    return [$requestedEnvironment, $matchedService];
+}
+
+function getEnvironmentFromConfig(): ?string
+{
+    $environmentFromConfig = $_ENV['SERVICES_ENVIRONMENT'] ?? null;
+
+    return is_string($environmentFromConfig) && $environmentFromConfig !== '' ? $environmentFromConfig : null;
 }
 
 /**
@@ -124,29 +131,10 @@ function getServiceFromRequestParams(?string $env): array
  */
 function getMtlsConfig(): array
 {
-    $cert = $_ENV['MTLS_CERT'] ?? null;
-    $key = $_ENV['MTLS_KEY'] ?? null;
-    $ca = $_ENV['MTLS_CA'] ?? null;
-
-    $verify = true;
-
-    if ($ca !== null && $ca !== '') {
-        $resolvedCa = realpath($ca);
-        $baseDir = realpath(__DIR__ . '/../');
-
-        if ($resolvedCa !== false && $baseDir !== false && str_starts_with($resolvedCa, $baseDir . DIRECTORY_SEPARATOR)) {
-            $verify = $resolvedCa;
-        } else {
-            // Invalid CA path provided: log a warning and fall back to default verification
-            error_log('Invalid MTLS_CA path provided; falling back to default CA verification.');
-            $verify = true;
-        }
-    }
-
     return [
-        'cert' => !empty($cert) ? $cert : null,
-        'key' => !empty($key) ? $key : null,
-        'ca' => $verify,
+        'cert' => $_ENV['MTLS_CERT'] ?: null,
+        'key' => $_ENV['MTLS_KEY'] ?: null,
+        'ca' => $_ENV['MTLS_CA'] ?: true
     ];
 }
 
@@ -181,23 +169,22 @@ function getBasicAuth(array $service, string $env): ?array
     $envConfig = $service['environments'][$env] ?? [];
     [$usernameEnv, $passwordEnv] = getBasicAuthEnvVarNames($service, $env);
 
-    $username = getenv($usernameEnv);
-    $password = getenv($passwordEnv);
+    $username = getCredential($envConfig, $usernameEnv, 'username');
+    $password = getCredential($envConfig, $passwordEnv, 'password');
 
-    if ($username === false || $password === false || $username === '' || $password === '') {
-        $basicAuthConfig = $envConfig['basic_auth'] ?? [];
-        $username = $basicAuthConfig['username'] ?? null;
-        $password = $basicAuthConfig['password'] ?? null;
+    return $username === null && $password === null ? null : compact('username', 'password');
+}
+
+function getCredential(array $envConfig, string $basicAuthEnvVar, string $basicAuthKey)
+{
+    $credential = getenv($basicAuthEnvVar);
+    if (is_string($credential) && $credential !== '') {
+        return $credential;
     }
 
-    if ($username === null || $password === null || $username === '' || $password === '') {
-        return null;
-    }
+    $basicAuthConfig = $envConfig['basic_auth'] ?? [];
 
-    return [
-        'username' => $username,
-        'password' => $password,
-    ];
+    return $basicAuthConfig[$basicAuthKey] ?? null;
 }
 
 /**
@@ -207,6 +194,8 @@ function getBasicAuth(array $service, string $env): ?array
  * @param string $cacheKey The key to retrieve the cached item.
  *
  * @return string|null The cached data as JSON or null if not found.
+ *
+ * @throws \Psr\Cache\InvalidArgumentException
  */
 function getFromCache(FilesystemAdapter $cache, string $cacheKey): ?string
 {
@@ -221,15 +210,25 @@ function getFromCache(FilesystemAdapter $cache, string $cacheKey): ?string
 /**
  * Saves data to the cache with the provided cache key.
  *
- * @param mixed $data The data to be cached.
- *
- * @return void
+ * @param FilesystemAdapter $cache The cache instance.
  * @param string $cacheKey The key to save the cached item.
  * @param mixed $data The data to be cached.
+ *
+ * @throws \Psr\Cache\InvalidArgumentException
  */
 function saveToCache(FilesystemAdapter $cache, string $cacheKey, mixed $data): void
 {
     $cachedItem = $cache->getItem($cacheKey);
     $cachedItem->set($data);
     $cache->save($cachedItem);
+}
+
+/**
+ * Returns the application name as per configuration or default.
+ *
+ * @return string
+ */
+function getAppName(): string
+{
+    return $_ENV['APP_NAME'] ?? 'GFModules Overview';
 }

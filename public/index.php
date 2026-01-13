@@ -7,6 +7,7 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/util.php';
 
 $loader = new FilesystemLoader(__DIR__ . '/../templates');
 $twig = new Environment($loader);
@@ -15,27 +16,12 @@ $env_path = getenv('ENV_PATH') ?: __DIR__ . '/..';
 $dotenv = Dotenv::createImmutable($env_path);
 $dotenv->load();
 
-$servicesFileEnv = $_ENV['SERVICES_FILE'] ?? '';
-$servicesFile = $servicesFileEnv === '' ? 'services.json' : $servicesFileEnv;
-
-if (!str_starts_with($servicesFile, DIRECTORY_SEPARATOR)) {
-    $servicesFile = __DIR__ . '/../' . ltrim($servicesFile, '/');
-}
-
-if (!is_file($servicesFile)) {
-    http_response_code(500);
-    echo 'Services configuration file not found: ' . $servicesFile;
-    exit;
-}
-
-$services = json_decode(file_get_contents($servicesFile), true);
-$servicesEnvironment = $_ENV['SERVICES_ENVIRONMENT'] ?? '';
-$env = $servicesEnvironment === '' ? null : $servicesEnvironment;
-$appName = $_ENV['APP_NAME'] ?? 'GFModules Overview';
+$services = getConfiguredServices();
+$configuredEnvironment = getEnvironmentFromConfig();
 
 $envs = [];
-if ($env !== null) {
-    $envs = [$env];
+if ($configuredEnvironment !== null) {
+    $envs = [$configuredEnvironment];
 } else {
     $envSet = [];
     foreach ($services as $service) {
@@ -50,4 +36,4 @@ if ($env !== null) {
     sort($envs);
 }
 
-echo $twig->render('index.twig', ['envs' => $envs, 'services' => $services, 'app_name' => $appName]);
+echo $twig->render('index.twig', ['envs' => $envs, 'services' => $services, 'app_name' => getAppName()]);

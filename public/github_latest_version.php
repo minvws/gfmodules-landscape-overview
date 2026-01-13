@@ -33,7 +33,7 @@ function fetch_github_data(array $service)
             'tag_name' => $latest['tag_name'],
             'published_at' => $latest['published_at'],
         ];
-    } catch (Throwable $e) {
+    } catch (Exception $e) {
         return ['error' => 'GitHub API error', 'detail' => $e->getMessage()];
     }
 }
