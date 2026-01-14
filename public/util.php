@@ -138,29 +138,42 @@ function getMtlsConfig(): array
     ];
 }
 
-function slugifyEnvKey(string $value): string
+function slugify(string $value, string $default = ''): string
 {
     $slug = strtoupper(preg_replace('/[^a-zA-Z0-9]+/', '_', $value));
     $slug = trim($slug, '_');
 
-    return $slug !== '' ? $slug : 'SERVICE';
+    return $slug !== '' ? $slug : $default;
 }
 
 function getBasicAuthEnvVarNames(array $service, string $env): array
 {
     $envConfig = $service['environments'][$env] ?? [];
     $basicAuthConfig = $envConfig['basic_auth'] ?? [];
+    $basicAuthUserNameEnvVar = $basicAuthConfig['username_env'] ?? null;
+    $basicAuthPasswordEnvVar = $basicAuthConfig['password_env'] ?? null;
 
-    if (!empty($basicAuthConfig['username_env']) && !empty($basicAuthConfig['password_env'])) {
-        return [$basicAuthConfig['username_env'], $basicAuthConfig['password_env']];
-    }
+    return !empty($basicAuthUserNameEnvVar) && !empty($basicAuthPasswordEnvVar)
+        ? [$basicAuthUserNameEnvVar, $basicAuthPasswordEnvVar]
+        : createBasicAuthEnvVarNames($service, $env);
+}
 
-    $serviceKey = slugifyEnvKey($service['name'] ?? 'service');
-    $envKey = slugifyEnvKey($env);
+/**
+ * Create Basic Auth environment variable names based on service name and environment.
+ *
+ * @param array $service A single service configuration
+ * @param string $env The environment name
+ *
+ * @return array{0: string, 1: string} An array containing the username and password environment variable names
+ */
+function createBasicAuthEnvVarNames(array $service, string $env): array
+{
+    $serviceAsSlug = slugify($service['name'] ?? '', 'SERVICE');
+    $envAsSlug = slugify($env, 'ENV');
 
     return [
-        "BASIC_AUTH_{$serviceKey}_{$envKey}_USERNAME",
-        "BASIC_AUTH_{$serviceKey}_{$envKey}_PASSWORD",
+        sprintf('BASIC_AUTH_%s_%s_USERNAME', $serviceAsSlug, $envAsSlug),
+        sprintf('BASIC_AUTH_%s_%s_PASSWORD', $serviceAsSlug, $envAsSlug),
     ];
 }
 
