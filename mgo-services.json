@@ -1,0 +1,152 @@
+[
+  {
+    "name": "DVP Proxy",
+    "github": "minvws/nl-mgo-dvp-proxy-private",
+    "type": "Fastapi",
+    "has_version": true,
+    "description": "DVP Proxy which handles forwarding requests to the DVA servers over mTLS.",
+    "environments": {
+      "test": {
+        "url": "https://dvp-proxy.test.mgo.irealisatie.nl",
+        "version_url": "https://dvp-proxy.test.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://dvp-proxy.acc.mgo.irealisatie.nl",
+        "version_url": "https://dvp-proxy.acc.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  },
+  {
+    "name": "LOAD",
+    "github": "minvws/nl-mgo-localization-private",
+    "type": "Fastapi",
+    "has_version": true,
+    "description": "Localization Addressing service for MGO.",
+    "environments": {
+      "test": {
+        "url": "https://lo-ad.test.mgo.irealisatie.nl",
+        "version_url": "https://lo-ad.test.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://lo-ad.acc.mgo.irealisatie.nl",
+        "version_url": "https://lo-ad.acc.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  },
+  {
+    "name": "DVA Mock",
+    "description": "Mock implementation of a DienstVerlener Aanbieder  service for testing purposes.",
+    "github": "minvws/nl-mgo-dva-mock-private",
+    "type": "Fastapi",
+    "has_version": true,
+    "environments": {
+      "test": {
+        "url": "https://dva-mock.test.mgo.irealisatie.nl",
+        "version_url": "https://dva-mock.test.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://dva-mock.acc.mgo.irealisatie.nl",
+        "version_url": "https://dva-mock.acc.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  },
+  {
+    "name": "CBP",
+    "github": "minvws/nl-mgo-vad-clients-manager-private",
+    "description": "Client management portal for the VAD service.",
+    "type": "Laravel",
+    "has_version": true,
+    "environments": {
+      "test": {
+        "url": "https://cbp.test.mgo.irealisatie.nl",
+        "version_url": "https://cbp.test.mgo.irealisatie.nl/version.json",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://cbp.acc.mgo.irealisatie.nl",
+        "version_url": "https://cbp.acc.mgo.irealisatie.nl/api/version",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  },
+  {
+    "name": "VAD",
+    "github": "minvws/nl-mgo-max-vad-private",
+    "description": "The Vertrouwde AuthenticatieDienst (VAD) is the TVS SSO authentication service for MGO.",
+    "type": "Fastapi",
+    "has_version": true,
+    "environments": {
+      "test": {
+        "url": "https://vad.test.mgo.irealisatie.nl",
+        "version_url": "https://vad.test.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://vad.acc.mgo.irealisatie.nl",
+        "version_url": "https://vad.acc.mgo.irealisatie.nl/",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  },
+  {
+    "name": "Web app",
+    "description": "The main client web application for MGO.",
+    "github": "minvws/nl-mgo-app-web-private",
+    "type": "React",
+    "has_version": true,
+    "environments": {
+      "test": {
+        "url": "https://web.test.mgo.irealisatie.nl",
+        "version_url": "https://web.test.mgo.irealisatie.nl/version.json",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      },
+      "acc": {
+        "url": "https://web.acc.mgo.irealisatie.nl",
+        "version_url": "https://web.acc.mgo.irealisatie.nl/version.json",
+        "basic_auth": {
+          "username_env": "BASIC_AUTH_MGO_USERNAME",
+          "password_env": "BASIC_AUTH_MGO_PASSWORD"
+        }
+      }
+    }
+  }
+]
