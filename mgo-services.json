@@ -51,13 +51,13 @@
   },
   {
     "name": "DVA Mock",
-    "description": "Mock implementation of a DienstVerlener Aanbieder  service for testing purposes.",
+    "description": "Mock implementation of a DienstVerlener Aanbieder service for testing purposes.",
     "github": "minvws/nl-mgo-dva-mock-private",
     "type": "Fastapi",
     "has_version": true,
     "environments": {
       "test": {
-        "url": "https://dva-mock.test.mgo.irealisatie.nl",
+        "url": "https://dva-mock.test.mgo.irealisatie.nl/health",
         "version_url": "https://dva-mock.test.mgo.irealisatie.nl/",
         "basic_auth": {
           "username_env": "BASIC_AUTH_MGO_USERNAME",
@@ -65,7 +65,7 @@
         }
       },
       "acc": {
-        "url": "https://dva-mock.acc.mgo.irealisatie.nl",
+        "url": "https://dva-mock.acc.mgo.irealisatie.nl/health",
         "version_url": "https://dva-mock.acc.mgo.irealisatie.nl/",
         "basic_auth": {
           "username_env": "BASIC_AUTH_MGO_USERNAME",
