@@ -190,7 +190,7 @@ function getBasicAuth(array $service, string $env): ?array
 
 function getCredential(array $envConfig, string $basicAuthEnvVar, string $basicAuthKey)
 {
-    $credential = getenv($basicAuthEnvVar);
+    $credential = $_ENV[$basicAuthEnvVar];
     if (is_string($credential) && $credential !== '') {
         return $credential;
     }
