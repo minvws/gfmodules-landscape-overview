@@ -4,12 +4,6 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
-registries:
-  github-minvws:
-    type: git
-    url: https://github.com
-    username: x-access-token
-    password: "${{ secrets.REPO_READ_ONLY_TOKEN }}"
 
 updates:
   # Maintain dependencies for GitHub Actions
@@ -23,8 +17,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    registries:
-      - github-minvws
     open-pull-requests-limit: 5
     groups:
       version-updates:
