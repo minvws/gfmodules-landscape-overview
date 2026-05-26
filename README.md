@@ -1,8 +1,27 @@
-# Simple overview of the GFModule infrastructure landscape
+# GFModules infrastructure landscape
 
-This will be a simple overview of the GFModule infrastructure including versioning and open GitHub PR's.
+This app gives a simple overview of the GFModule infrastructure including versioning and open GitHub PR's. 
+This app is part of the 'Generieke Functies, lokalisatie en addressering' project of the
+Ministry of Health, Welfare and Sport of the Dutch government.
 
-Note that this is a work in progress and will be updated as we go along.
+## Disclaimer
+
+This project and all associated code serve solely as documentation
+and demonstration purposes to illustrate potential system
+communication patterns and architectures.
+
+This codebase:
+
+- Is NOT intended for production use
+- Does NOT represent a final specification
+- Should NOT be considered feature-complete or secure
+- May contain errors, omissions, or oversimplified implementations
+- Has NOT been tested or hardened for real-world scenarios
+
+The code examples are only meant to help understand concepts and demonstrate possibilities.
+
+By using or referencing this code, you acknowledge that you do so at your own
+risk and that the authors assume no liability for any consequences of its use.
 
 # .env
 There is a simple `.env` that allows you to set some configuration options. You can copy the
@@ -89,3 +108,15 @@ All service definitions live in a JSON file in the repository root. By default t
   }
 ]
 ```
+
+## Contribution
+
+As stated in the [Disclaimer](#disclaimer) this project and all associated code serve solely as documentation and
+demonstration purposes to illustrate potential system communication patterns and architectures.
+
+For that reason we will only accept contributions that fit this goal. We do appreciate any effort from the
+community, but because our time is limited it is possible that your PR or issue is closed without a full justification.
+
+If you plan to make non-trivial changes, we recommend to open an issue beforehand where we can discuss your planned changes. This increases the chance that we might be able to use your contribution (or it avoids doing work if there are reasons why we wouldn't be able to use it).
+
+Note that all commits should be signed using a gpg key.
