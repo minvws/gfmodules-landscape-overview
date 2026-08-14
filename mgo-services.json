@@ -61,7 +61,7 @@
         }
       },
       "acc": {
-        "url": "https://dva-mock.acc.mgo.irealisatie.nl/health",
+        "url": "https://dva-mock.test.mgo.prolocation.net/health",
         "has_version": false
       }
     }
