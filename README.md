@@ -93,12 +93,15 @@ All service definitions live in a JSON file in the repository root. By default t
 [
   {
     "name": "Name of the service",
+    "has_version": true,
     "environments": {
       "test": {
-        "url": "https://service.test.example.com"
+        "url": "https://service.test.example.com",
+        "version_url": "https://service.test.example.com/version.json"
       },
       "acceptance": {
-        "url": "https://service.acceptance.example.com"
+        "url": "https://service.acceptance.example.com",
+        "has_version": false
       }
     },
     "github": "owner/repo",
