@@ -33,7 +33,7 @@
                         <td><a href="{{ service.environments[env].external_url ?? service.environments[env].url }}" target="_blank">{{ service.environments[env].external_url ?? service.environments[env].url }}</a></td>
                         <td class="status" data-status-service="{{ service.name }}" data-status-env="{{ env }}">Loading…</td>
                         <td class="version">
-                            {% if service.has_version %}
+                            {% if service.environments[env].has_version ?? service.has_version ?? true %}
                                 <span data-version-service="{{ service.name }}" data-version-env="{{ env }}">Loading…</span>
                             {% else %}
                                 —
