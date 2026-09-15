@@ -17,7 +17,6 @@ updates:
     open-pull-requests-limit: 5
     groups:
       actions:
-        patterns: ["*"]
 
   - package-ecosystem: docker
     directories: ["/"]
@@ -34,7 +33,6 @@ updates:
     groups:
       docker-patch-minor:
         update-types: [patch, minor]
-        patterns: ["*"]
 
   - package-ecosystem: composer
     directory: / # composer.json + composer.lock in the root
@@ -54,4 +52,3 @@ updates:
     groups:
       php-patch-minor:
         update-types: [patch, minor]
-        patterns: ["*"]
