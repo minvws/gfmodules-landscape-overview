@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   # ------------------------------------------------------------------------------------
-  composer-install:
+  composer_install:
     runs-on: ubuntu-24.04
     strategy:
       max-parallel: 3
@@ -37,20 +37,45 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+  detect_modified_files:
+    name: Modified files
+    runs-on: ubuntu-24.04
+    outputs:
+      image_files_changed: ${{ steps.image-files-changed.outputs.any_changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Check image-related file changes
+        id: image-files-changed
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
+        with:
+          files: |
+            Dockerfile
+            composer.json
+            composer.lock
+            .github/workflows/ci.yml
+
   # ------------------------------------------------------------------------------------
   build_and_push_container:
     name: Create and publish Docker image to the Github Package Registry
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
+    needs:
+      [
+        composer_install,
+        detect_modified_files,
+      ]
+    # Only run this job on main branch, version tags, or if image-related files have changed
+    if: |
+      github.ref == 'refs/heads/main' ||
+      startsWith(github.ref, 'refs/tags/v') ||
+      needs.detect_modified_files.outputs.image_files_changed == 'true'
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/cache@v6
-        with:
-          path: vendor/
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
       - name: Log in to the Container registry
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -62,12 +87,47 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
-          push: true
+          push: false
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            RELEASE_VERSION=${{ github.ref_name }}
+            GIT_SHA=${{ github.sha }}
 
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: "sarif"
+          output: "trivy-results.sarif"
+          exit-code: "0"
+          severity: "CRITICAL,HIGH"
+          vuln-type: "library"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4.38.0
+        # Only upload SARIF results on main branch or version tags
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+        with:
+          sarif_file: "trivy-results.sarif"
+
+      - name: Fail build on vulnerabilities
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: "table"
+          exit-code: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && '0' || '1' }}
+          severity: "CRITICAL,HIGH"
+          vuln-type: "library"
+          skip-setup-trivy: true
+
+      - name: Push Docker image
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+        run: |
+          echo "${{ steps.meta.outputs.tags }}" | xargs -I{} docker push {}
