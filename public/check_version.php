@@ -43,7 +43,7 @@ function fetch_version_info(array $service, ?string $env, array $mtls): array
     }
 
     if (!is_array($data)) {
-        return ['error' => 'Invalid response', 'details' => 'Response from ' . $url . ' is not version JSON'];
+        return ['error' => 'Invalid response', 'details' => 'Response from ' . $url . ' is not valid JSON'];
     }
 
     return $data;
