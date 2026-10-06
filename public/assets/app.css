@@ -102,3 +102,22 @@ th:not(.sort-asc)::after {
 .status.unknown {
     color: #757575;
 }
+td .features {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+td .features li {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    background: #fff3c4;
+    color: #6b4f00;
+    border: 1px solid #f0d77a;
+    white-space: nowrap;
+    cursor: help;
+}
