@@ -40,6 +40,27 @@ function getStatusClass(status) {
     return 'unknown';
 }
 
+// Lists the features a service reports in its version.json under the service name of its row.
+// Uses textContent only, so values from a service cannot inject markup.
+function renderFeatures(versionElem, features) {
+    if (!Array.isArray(features) || features.length === 0) return;
+
+    const nameCell = versionElem.closest("tr")?.cells[0];
+    if (!nameCell) return;
+
+    const list = document.createElement("ul");
+    list.className = "features";
+    features.forEach(feature => {
+        if (!feature || typeof feature !== "object") return;
+        const item = document.createElement("li");
+        item.textContent = feature.title || feature.id || "unnamed feature";
+        if (feature.description) item.title = feature.description;
+        if (feature.id) item.dataset.featureId = feature.id;
+        list.appendChild(item);
+    });
+    nameCell.appendChild(list);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("[data-github-version-service]").forEach(cell => {
         const serviceName = encodeURIComponent(cell.getAttribute("data-github-version-service"));
@@ -88,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const envName = encodeURIComponent(span.getAttribute("data-version-env"));
 
         if (!serviceName || serviceName === '—' || !envName || envName === '—') {
-            cell.textContent = "—";
+            span.textContent = "—";
             return;
         }
 
@@ -98,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const version = data.version || "unknown";
                 const shortRef = data.git_ref ? data.git_ref.substring(0, 8) : "";
                 span.textContent = shortRef ? `${version} (${shortRef})` : version;
+                renderFeatures(span, data.features);
             })
             .catch(() => {
                 span.textContent = "error";
