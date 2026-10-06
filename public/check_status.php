@@ -8,7 +8,7 @@ require_once __DIR__ . '/util.php';
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 
 handleRequest('status_checker', 'fetch_http_status');
 
@@ -66,16 +66,17 @@ function fetch_http_status(array $service, ?string $env, array $mtls): array
             'url' => $finalUrl,
             'timestamp' => time(),
         ];
-    } catch (RequestException $e) {
+    } catch (ConnectException $e) {
         return [
-            'error' => 'connection_failed',
+            'error' => 'host_not_found',
             'details' => $e->getMessage(),
             'url' => $service['environments'][$env]['url'],
             'timestamp' => time(),
         ];
-    } catch (ConnectException $e) {
+    } catch (GuzzleException $e) {
+        // TLS failures and other transport errors are not RequestExceptions in this Guzzle version.
         return [
-            'error' => 'host_not_found',
+            'error' => 'connection_failed',
             'details' => $e->getMessage(),
             'url' => $service['environments'][$env]['url'],
             'timestamp' => time(),
