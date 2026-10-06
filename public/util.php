@@ -30,11 +30,13 @@ function handleRequest(string $cacheNamespace, callable $action): never
 
     [$environment, $service] = getEnvironmentAndServiceFromRequest();
 
-    $data = getFromCache($cache, sha1($service['name']));
+    // Results differ per environment, so the environment is part of the key.
+    $cacheKey = sha1($service['name'] . '|' . $environment);
+    $data = getFromCache($cache, $cacheKey);
 
-    if (!$data) {
+    if ($data === null) {
         $data = $action($service, $environment, getMtlsConfig());
-        saveToCache($cache, sha1($service['name']), $data);
+        saveToCache($cache, $cacheKey, $data);
     }
 
     header('Content-Type: application/json');
@@ -206,18 +208,19 @@ function getCredential(array $envConfig, string $basicAuthEnvVar, string $basicA
  * @param FilesystemAdapter $cache The cache instance.
  * @param string $cacheKey The key to retrieve the cached item.
  *
- * @return string|null The cached data as JSON or null if not found.
+ * @return array|null The cached data, or null if not found. The caller encodes it as JSON.
  *
  * @throws \Psr\Cache\InvalidArgumentException
  */
-function getFromCache(FilesystemAdapter $cache, string $cacheKey): ?string
+function getFromCache(FilesystemAdapter $cache, string $cacheKey): ?array
 {
     $cachedItem = $cache->getItem($cacheKey);
-    if ($cachedItem->isHit()) {
-        header('Content-Type: application/json');
-        return json_encode($cachedItem->get());
+    if (!$cachedItem->isHit()) {
+        return null;
     }
-    return null;
+    $data = $cachedItem->get();
+
+    return is_array($data) ? $data : null;
 }
 
 /**
